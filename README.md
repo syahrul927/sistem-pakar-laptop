@@ -22,4 +22,4 @@ Project ini dibuat dengan standard tech 2023 starter kit t3-stack
 
 ## Schema Database
 
-!(ERD Picture)[ERD.svg]
+![ERD Picture](ERD.svg)
