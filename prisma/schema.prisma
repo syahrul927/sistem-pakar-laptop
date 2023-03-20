@@ -8,6 +8,7 @@ generator client {
 generator erd {
   provider = "prisma-erd-generator"
   output   = "../ERD.svg"
+  includeRelationFromFields = true
 }
 
 datasource db {
@@ -70,7 +71,6 @@ model Case {
   id          Int           @id @default(autoincrement())
   problem     String
   solution    String
-  computer    String
   date        DateTime
   CaseSymptom CaseSymptom[]
 }
@@ -79,7 +79,6 @@ model Case {
 model Symptom {
   id                Int              @id @default(autoincrement())
   description       String
-  type              String
   weight            Float
   CaseSymptom       CaseSymptom[]
   HistoryDiagnosa   HistoryDiagnosa? @relation(fields: [historyDiagnosaId], references: [id])
@@ -103,6 +102,5 @@ model HistoryDiagnosa {
   date     DateTime  @default(now())
   problem  String
   solution String
-  computer String
   symptoms Symptom[]
 }
