@@ -78,6 +78,7 @@ model Case {
 // Tabel Gejala
 model Symptom {
   id                Int              @id @default(autoincrement())
+  name              String
   description       String
   weight            Float
   CaseSymptom       CaseSymptom[]

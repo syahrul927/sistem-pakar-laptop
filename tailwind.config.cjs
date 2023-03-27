@@ -6,7 +6,11 @@ module.exports = {
         "./node_modules/tw-elements/dist/js/**/*.js",
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                mplus: ["'M PLUS Rounded 1c'", "Verdana", "sans-serif"],
+            },
+        },
     },
     plugins: [require("tw-elements/dist/plugin")],
 };

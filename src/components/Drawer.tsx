@@ -1,53 +1,18 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
-import { api } from "~/utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
 const Drawer = () => {
-    const { theme, setTheme } = useTheme();
-
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-    const toggleTheme = () => {
-        setTheme(theme === "dark" ? "light" : "dark");
-    };
-
     const { data: sessionData } = useSession();
-
-    const renderToggle = () => {
-        if (!mounted) return null;
-        return (
-            <div className="">
-                <label className="inline-block pl-[0.15rem] text-gray-600 hover:cursor-pointer dark:text-gray-300">
-                    Light
-                </label>
-                <input
-                    className="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-[rgba(0,0,0,0.25)] outline-none before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-white after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                    type="checkbox"
-                    role="switch"
-                    id="flexSwitchCheckDefault"
-                    onChange={toggleTheme}
-                />
-                <label className="inline-block pl-[0.15rem] text-gray-600 hover:cursor-pointer dark:text-gray-300">
-                    Dark
-                </label>
-            </div>
-        );
-    };
     return (
         <nav
             id="sidenav-2"
-            className="fixed top-0 left-0 z-[1035] h-screen w-60 -translate-x-full overflow-hidden bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] data-[te-sidenav-hidden='false']:translate-x-0 dark:bg-zinc-800"
             data-te-sidenav-init
             data-te-sidenav-hidden="false"
             data-te-sidenav-mode="side"
             data-te-sidenav-content="#content"
+            className="fixed top-0 left-0 z-[1035] h-screen w-60 -translate-x-full overflow-hidden bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] data-[te-sidenav-hidden='false']:translate-x-0 dark:bg-zinc-800"
         >
             <div className="flex w-full flex-col space-y-2 px-6 pt-12">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-400 text-black dark:border-gray-300 dark:text-gray-300">
@@ -209,35 +174,7 @@ const Drawer = () => {
                     </ul>
                 </li>
             </ul>
-            {renderToggle()}
         </nav>
     );
 };
 export default Drawer;
-const AuthShowcase: React.FC = () => {
-    const { data: sessionData } = useSession();
-
-    const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-        undefined, // no input
-        { enabled: sessionData?.user !== undefined }
-    );
-
-    return (
-        <div className="flex flex-col items-center justify-center gap-4">
-            <p className="text-base-content text-center text-2xl">
-                {sessionData && (
-                    <span>Logged in as {sessionData.user?.name}</span>
-                )}
-                {secretMessage && <span> - {secretMessage}</span>}
-            </p>
-            <button
-                className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
-                onClick={
-                    sessionData ? () => void signOut() : () => void signIn()
-                }
-            >
-                {sessionData ? "Sign out" : "Sign in"}
-            </button>
-        </div>
-    );
-};

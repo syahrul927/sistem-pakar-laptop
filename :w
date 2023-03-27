@@ -1,9 +1,17 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Header from "~/components/Header";
+import { useTheme } from "next-themes";
+import { useEffect } from "react";
+import ThemeToggle from "~/components/ThemeToggle";
 import ArticleThumbnail from "~/components/ArticleThumbnail";
 
 const Home: NextPage = () => {
+    const { setTheme } = useTheme();
+    useEffect(() => {
+        setTheme("light");
+    }, [setTheme]);
+
     return (
         <>
             <Head>
@@ -11,10 +19,10 @@ const Home: NextPage = () => {
                 <meta name="description" content="Learning purpose" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="break-words bg-white leading-6 text-zinc-900 transition-colors duration-500 dark:bg-zinc-800 dark:text-zinc-300">
+            <div className="break-words bg-white leading-6 text-zinc-900 transition-colors duration-500 dark:bg-zinc-900 dark:text-zinc-300">
                 <Header />
-                <main className="flex h-screen w-full items-start justify-center">
-                    <div className="grid max-w-3xl grid-cols-1 gap-5 p-4 md:grid-cols-2 lg:grid-cols-3">
+                <main className="flex h-screen w-full items-center justify-center">
+                    <div className="grid max-w-xl grid-cols-2 gap-5 p-4 lg:grid-cols-3">
                         <ArticleThumbnail />
                         <ArticleThumbnail />
                         <ArticleThumbnail />
