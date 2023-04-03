@@ -111,7 +111,7 @@ const Header = () => {
                     <Image
                         className="absolute inset-0 min-h-full min-w-full object-cover opacity-30 md:-top-52"
                         src={"/pict_home.jpeg"}
-                        width={500}
+                        width={400}
                         height={500}
                         alt="pict_home"
                     />
@@ -123,7 +123,9 @@ const Header = () => {
                         <span className="text-blue-500">Laptop</span> dan{" "}
                         <span className="text-blue-500">Komputer</span>
                     </div>
-                    <Button>Mulai Diagnosa</Button>
+                    <Link href={"/diagnosa"}>
+                        <Button>Mulai Diagnosa</Button>
+                    </Link>
                 </div>
             </section>
         </header>
@@ -169,7 +171,7 @@ const AuthShowcase: React.FC = () => {
         </div>
     ) : (
         <div
-            className="flex cursor-pointer flex-row items-center justify-start space-x-3 lg:justify-end lg:pr-20"
+            className="flex h-full flex-col items-start justify-start space-x-3 lg:flex-row lg:items-center lg:justify-end lg:pr-20"
             onClick={sessionData ? () => void signOut() : () => void signIn()}
         >
             {sessionData ? "Sign out" : "Sign in"}

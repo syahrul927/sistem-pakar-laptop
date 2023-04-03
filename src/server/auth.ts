@@ -4,7 +4,6 @@ import {
     type NextAuthOptions,
     type DefaultSession,
 } from "next-auth";
-import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
@@ -51,11 +50,14 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
+            httpOptions: {
+                timeout: 40000,
+            },
         }),
-        GithubProvider({
-            clientId: env.GITHUB_CLIENT_ID,
-            clientSecret: env.GITHUB_CLIENT_SECRET,
-        }),
+        // GithubProvider({
+        //     clientId: env.GITHUB_CLIENT_ID,
+        //     clientSecret: env.GITHUB_CLIENT_SECRET,
+        // }),
         /**
          * ...add more providers here.
          *
