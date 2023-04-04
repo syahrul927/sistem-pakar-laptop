@@ -13,7 +13,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
     useEffect(() => {
         const use = async () => {
-            await import("tw-elements").default;
+            await import("tw-elements");
         };
         void use();
     }, []);

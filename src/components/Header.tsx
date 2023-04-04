@@ -86,7 +86,7 @@ const Header = () => {
                                 </a>
                             </li>
                             <li data-te-nav-item-ref>
-                                <a
+                                <Link
                                     href="/dashboard"
                                     onClick={() => {
                                         void router.prefetch("/dashboard");
@@ -97,7 +97,7 @@ const Header = () => {
                                     data-te-ripple-color="light"
                                 >
                                     Login As Admin
-                                </a>
+                                </Link>
                             </li>
                             <li data-te-nav-item-ref className="flex-1">
                                 <AuthShowcase />
