@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Drawer from "~/components/Drawer";
+import Sidebar from "~/components/Sidebar";
 import Content from "~/components/Content";
 import DrawerEnd from "~/components/DrawerEnd";
 import Button from "~/components/Button";
@@ -319,7 +319,7 @@ const Dashboard: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <section className="relative flex h-screen min-h-full items-start justify-center overflow-y-auto border bg-gray-100 transition-colors duration-500 dark:border-zinc-900 dark:bg-zinc-700">
-                <Drawer />
+                <Sidebar />
                 <DrawerEnd />
                 <div
                     className="flex w-full flex-col items-center space-y-3 p-5 !pl-[260px] "

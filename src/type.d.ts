@@ -9,3 +9,9 @@ export type ICustomerView = {
     phone: string;
     email: string;
 };
+
+export type IUserViewTable = {
+    id: string;
+    nama: string;
+    email: string;
+};

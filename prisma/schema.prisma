@@ -6,8 +6,8 @@ generator client {
 }
 
 generator erd {
-  provider = "prisma-erd-generator"
-  output   = "../ERD.svg"
+  provider                  = "prisma-erd-generator"
+  output                    = "../ERD.svg"
   includeRelationFromFields = true
 }
 
@@ -51,7 +51,9 @@ model User {
   id              String            @id @default(cuid())
   name            String?
   email           String?           @unique
+  type            String            @default("public")
   emailVerified   DateTime?
+  password        String?
   image           String?
   accounts        Account[]
   sessions        Session[]

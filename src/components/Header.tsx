@@ -1,13 +1,12 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { api } from "~/utils/api";
 import Button from "./Button";
 import Dropdown, { DropdownProps } from "./Dropdown";
 import ThemeToggle from "./ThemeToggle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 const Header = () => {
-    const router = useRouter();
     return (
         <header>
             <nav
@@ -86,18 +85,15 @@ const Header = () => {
                                 </a>
                             </li>
                             <li data-te-nav-item-ref>
-                                <Link
-                                    href="/dashboard"
-                                    onClick={() => {
-                                        void router.prefetch("/dashboard");
-                                    }}
+                                {/* <Link
+                                    href="/admin/login"
                                     className="block transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:hover:text-white dark:focus:text-white lg:p-2 [&.active]:text-black/90"
                                     data-te-nav-link-ref
                                     data-te-ripple-init
                                     data-te-ripple-color="light"
                                 >
                                     Login As Admin
-                                </Link>
+                                </Link> */}
                             </li>
                             <li data-te-nav-item-ref className="flex-1">
                                 <AuthShowcase />
@@ -155,26 +151,27 @@ const AuthShowcase: React.FC = () => {
             <Dropdown
                 items={AccountAction}
                 component={
-                    <Image
-                        width={30}
-                        height={30}
-                        src={
-                            sessionData.user?.image ||
-                            "https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png"
-                        }
-                        alt="image"
-                        className="rounded-full"
-                    />
+                    sessionData.user.image ? (
+                        <Image
+                            width={30}
+                            height={30}
+                            src={sessionData.user.image}
+                            alt="image"
+                            className="rounded-full"
+                        />
+                    ) : (
+                        <FontAwesomeIcon icon={faUser} />
+                    )
                 }
             />
             <ThemeToggle />
         </div>
     ) : (
         <div
-            className="flex h-full flex-col items-start justify-start space-x-3 lg:flex-row lg:items-center lg:justify-end lg:pr-20"
+            className="flex h-full cursor-pointer select-none flex-col items-start justify-start space-x-3 lg:flex-row lg:items-center lg:justify-end lg:pr-20"
             onClick={sessionData ? () => void signOut() : () => void signIn()}
         >
-            {sessionData ? "Sign out" : "Sign in"}
+            {status} | {sessionData ? "Sign out" : "Sign in"}
         </div>
     );
 };

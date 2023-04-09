@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { useEffect } from "react";
 import { ThemeProvider } from "next-themes";
+import { ToastProvider } from "~/hook/ToastHooks";
 
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,
@@ -19,9 +20,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
     }, []);
     return (
         <SessionProvider session={session}>
-            <ThemeProvider enableColorScheme attribute="class">
-                <Component {...pageProps} />
-            </ThemeProvider>
+            <ToastProvider>
+                <ThemeProvider enableColorScheme attribute="class">
+                    <Component {...pageProps} />
+                </ThemeProvider>
+            </ToastProvider>
         </SessionProvider>
     );
 };

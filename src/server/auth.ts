@@ -8,6 +8,9 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
+import Credentials from "next-auth/providers/credentials";
+import { verify } from "argon2";
+import { loginSchema } from "~/common/validation/auth";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -37,21 +40,71 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
     callbacks: {
-        session({ session, user }) {
+        jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.email = user.email;
+            }
+
+            return token;
+        },
+        session({ session, token }) {
+            console.log("session : ", session);
+            console.log("token : ", token);
+            const { id } = token;
             if (session.user) {
-                session.user.id = user.id;
+                session.user.id = typeof id === "string" ? id : "";
                 // session.user.role = user.role; <-- put other properties on the session here
             }
             return session;
         },
     },
     adapter: PrismaAdapter(prisma),
+    secret: env.JWT_SECRET,
+    session: {
+        strategy: "jwt",
+        maxAge: 15 * 24 * 30 * 60, // 15 days
+    },
     providers: [
         GoogleProvider({
             clientId: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
             httpOptions: {
                 timeout: 40000,
+            },
+        }),
+        Credentials({
+            id: "credentials",
+            type: "credentials",
+            name: "Admin",
+            credentials: {
+                email: {
+                    label: "Email",
+                    type: "text",
+                    placeholder: "your.example@email.com",
+                },
+                password: { label: "Password", type: "password" },
+            },
+            async authorize(credentials, req) {
+                const creds = await loginSchema.parseAsync(credentials);
+                const user = await prisma.user.findFirst({
+                    where: {
+                        email: creds.email,
+                    },
+                });
+                if (!user || !user.password) {
+                    return null;
+                }
+                const isValidPassword = await verify(
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                    user.password,
+                    creds?.password
+                );
+
+                if (!isValidPassword) {
+                    return null;
+                }
+                return user;
             },
         }),
         // GithubProvider({

@@ -10,8 +10,8 @@
 const config = {
     images: {
         domains: [
-            "avatars.githubusercontent.com",
             "pngfind.com",
+            "avatars.githubusercontent.com",
             "lh3.googleusercontent.com",
         ],
     },
