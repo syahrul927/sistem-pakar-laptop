@@ -16,6 +16,7 @@ export type IUserViewTable = {
     id: string;
     nama: string;
     email: string;
+    type: string;
 };
 
 export type ICaseViewTable = {

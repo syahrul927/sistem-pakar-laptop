@@ -27,6 +27,10 @@ const UserPage: NextPage = () => {
                 id: "email",
                 title: "Email",
             },
+            {
+                id: "type",
+                title: "Tipe User",
+            },
         ],
     });
     const { isLoading } = api.user.getAll.useQuery(undefined, {
@@ -37,6 +41,7 @@ const UserPage: NextPage = () => {
                         id: item.id,
                         nama: item.name,
                         email: item.email,
+                        type: item.type.toUpperCase(),
                     } as IUserViewTable)
             );
             const newDataTables = { ...dataTable, data: newData };
