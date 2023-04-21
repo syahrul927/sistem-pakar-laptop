@@ -32,7 +32,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, show }: ToastProps) => {
     return (
         <div
             id="toast-success"
-            className={`mb-4 flex w-full max-w-md items-center rounded-lg border bg-white p-4 text-gray-500 shadow-lg dark:bg-zinc-800 dark:text-gray-400
+            className={`z-100 mb-4 flex w-full max-w-md items-center rounded-lg border bg-white p-4 text-gray-500 shadow-lg dark:bg-zinc-800 dark:text-gray-400
 			${show ? "fixed bottom-5 right-5 " : "hidden"}
 			`}
             role="alert"

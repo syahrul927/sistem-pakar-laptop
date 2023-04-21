@@ -1,11 +1,12 @@
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ComponentPropsWithoutRef } from "react";
 
-export interface DropdownProps {
+export interface DropdownItemProps {
     children: React.ReactNode | string;
     action?: () => void;
 }
-const DropDownItem: React.FC<{ item: DropdownProps }> = (props) => {
+const DropDownItem: React.FC<{ item: DropdownItemProps }> = (props) => {
     const { action, children } = props.item;
     return (
         <li>
@@ -19,14 +20,14 @@ const DropDownItem: React.FC<{ item: DropdownProps }> = (props) => {
         </li>
     );
 };
-
-const Dropdown: React.FC<{
-    items: DropdownProps[];
+export interface DropdownProps extends ComponentPropsWithoutRef<"div"> {
+    items: DropdownItemProps[];
     component?: React.ReactNode;
-}> = (props) => {
-    const { items, component } = props;
+}
+const Dropdown: React.FC<DropdownProps> = (props) => {
+    const { items, component, className } = props;
     return (
-        <div className="w-fit" data-te-dropdown-ref>
+        <div className={className} data-te-dropdown-ref>
             {component ? (
                 <div
                     id="dropdown"

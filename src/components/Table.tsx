@@ -1,17 +1,20 @@
-import { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
+import { makeid } from "~/utils/StringUtils";
 
-export interface TableHeadProps<T extends { [S: string]: string }> {
+export interface TableHeadProps<T extends { [S: string]: string | ReactNode }> {
     id: keyof T;
-    title: string | React.ReactNode;
+    title: string;
 }
 
-export interface TableProps<T extends { [S: string]: string }> {
+export interface TableProps<T extends { [S: string]: string | ReactNode }> {
     column: TableHeadProps<T>[];
     data: T[];
     numbering?: boolean;
 }
 
-const Table = <T extends { [S: string]: string }>(props: TableProps<T>) => {
+const Table = <T extends { [S: string]: string | ReactNode }>(
+    props: TableProps<T>
+) => {
     const { data } = props;
     const [countPerPage, setCountPerPage] = useState<number>(10);
     const [list, setList] = useState<T[]>(data);
@@ -57,9 +60,9 @@ const Table = <T extends { [S: string]: string }>(props: TableProps<T>) => {
 
     return (
         <div className="flex flex-col">
-            <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                    <div className="overflow-hidden">
+                    <div className="h-[80vh] overflow-y-auto">
                         <table className="min-w-full text-left text-sm font-light">
                             <thead className="border-b font-medium dark:border-neutral-500">
                                 <tr>
@@ -88,8 +91,8 @@ const Table = <T extends { [S: string]: string }>(props: TableProps<T>) => {
                                                     item[col.id] || "[Empty]";
                                                 return (
                                                     <td
-                                                        className="whitespace-nowrap px-6 py-4 font-medium"
-                                                        key={`col-${value}`}
+                                                        className="max-w-sm truncate whitespace-nowrap px-6 py-4 font-medium"
+                                                        key={`col-${makeid(4)}`}
                                                     >
                                                         {value}
                                                     </td>
@@ -103,7 +106,11 @@ const Table = <T extends { [S: string]: string }>(props: TableProps<T>) => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col items-end justify-end">
+            <div
+                className={`flex items-end ${
+                    !countPerPage ? "justify-end" : "justify-between"
+                }`}
+            >
                 {countPerPage ? (
                     <Pagination
                         currentPage={currentPage}
@@ -141,8 +148,8 @@ const Pagination: React.FC<PaginationProps> = (props) => {
                 <a
                     className={`${
                         curr
-                            ? "relative block rounded bg-primary-100 py-1.5 px-3 text-sm font-medium text-primary-700 transition-all duration-300"
-                            : "relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+                            ? "text-primary-700 relative block rounded bg-zinc-200 px-3 py-1.5 text-sm font-medium transition-all duration-300 dark:bg-zinc-700"
+                            : "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
                     }`}
                     href="#!"
                 >
@@ -173,7 +180,7 @@ const Pagination: React.FC<PaginationProps> = (props) => {
                         props.currentPage === 1
                             ? "cursor-not-allowed"
                             : "cursor-pointer"
-                    } relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-500 transition-all duration-300 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-white`}
+                    } relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-white`}
                 >
                     Previous
                 </a>
@@ -189,7 +196,7 @@ const Pagination: React.FC<PaginationProps> = (props) => {
                                 props.currentPage === 1
                                     ? "cursor-not-allowed"
                                     : "cursor-pointer"
-                            } relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400`}
+                            } relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400`}
                         >
                             ...
                         </a>
@@ -209,7 +216,7 @@ const Pagination: React.FC<PaginationProps> = (props) => {
                                 props.currentPage === 1
                                     ? "cursor-not-allowed"
                                     : "cursor-pointer"
-                            } relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400`}
+                            } relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400`}
                         >
                             ...
                         </a>
@@ -225,7 +232,7 @@ const Pagination: React.FC<PaginationProps> = (props) => {
                         props.currentPage === props.totalPage
                             ? "cursor-not-allowed"
                             : "cursor-pointer"
-                    } relative block rounded bg-transparent py-1.5 px-3 text-sm text-neutral-500 transition-all duration-300 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-white`}
+                    } relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-white`}
                 >
                     Next
                 </a>
@@ -252,11 +259,11 @@ const OptionCounter = (props: {
     const arr = ["10", "25", "50", "All"];
 
     return (
-        <div className="flex justify-end">
+        <div className="flex items-center justify-end space-x-2">
+            <p className="text-xs">Total Per Page</p>
             <div className="xl:w-24">
                 <select
-                    data-te-select-init
-                    className="w-full rounded-md px-2 py-0.5 capitalize"
+                    className="w-full rounded-md bg-white px-2 py-0.5 capitalize dark:bg-zinc-800"
                     onChange={(ev) => props.onChange(ev.target.value)}
                 >
                     {arr.map((item) => {

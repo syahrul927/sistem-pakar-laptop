@@ -11,6 +11,7 @@ import { prisma } from "~/server/db";
 import Credentials from "next-auth/providers/credentials";
 import { verify } from "argon2";
 import { loginSchema } from "~/common/validation/auth";
+import { User } from "@prisma/client";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -22,6 +23,7 @@ declare module "next-auth" {
     interface Session extends DefaultSession {
         user: {
             id: string;
+            type: string;
             // ...other properties
             // role: UserRole;
         } & DefaultSession["user"];
@@ -42,25 +44,22 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         jwt({ token, user }) {
             if (user) {
-                token.id = user.id;
-                token.email = user.email;
+                token.user = user;
             }
-
             return token;
         },
         session({ session, token }) {
-            console.log("session : ", session);
-            console.log("token : ", token);
-            const { id } = token;
             if (session.user) {
-                session.user.id = typeof id === "string" ? id : "";
+                const usr = token.user as User;
+                session.user.type = usr.type;
+                session.user.id = typeof usr.id === "string" ? usr.id : "";
                 // session.user.role = user.role; <-- put other properties on the session here
             }
             return session;
         },
     },
     adapter: PrismaAdapter(prisma),
-    secret: env.JWT_SECRET,
+    secret: env.NEXTAUTH_SECRET || "",
     session: {
         strategy: "jwt",
         maxAge: 15 * 24 * 30 * 60, // 15 days

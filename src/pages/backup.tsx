@@ -2,16 +2,17 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Sidebar from "~/components/Sidebar";
 import Content from "~/components/Content";
-import DrawerEnd from "~/components/DrawerEnd";
+import SlidePanel from "~/components/SlidePanel";
 import Button from "~/components/Button";
-import Dropdown, { type DropdownProps } from "~/components/Dropdown";
+import Dropdown, { type DropdownItemProps } from "~/components/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileEdit, faGear, faStar } from "@fortawesome/free-solid-svg-icons";
 import TextInput from "~/components/TextInput";
 import Table, { TableProps } from "~/components/Table";
 import { ICustomerView } from "~/type";
+import { useEffect, useState } from "react";
 
-const ActionMenu: DropdownProps[] = [
+const ActionMenu: DropdownItemProps[] = [
     {
         children: (
             <div>
@@ -311,6 +312,10 @@ const dataCustomer: TableProps<ICustomerView> = {
     ],
 };
 const Dashboard: NextPage = () => {
+    const [slide, setSlide] = useState(false);
+    useEffect(() => {
+        console.log("slide : ", slide);
+    }, [slide]);
     return (
         <>
             <Head>
@@ -320,28 +325,21 @@ const Dashboard: NextPage = () => {
             </Head>
             <section className="relative flex h-screen min-h-full items-start justify-center overflow-y-auto border bg-gray-100 transition-colors duration-500 dark:border-zinc-900 dark:bg-zinc-700">
                 <Sidebar />
-                <DrawerEnd />
+                <SlidePanel
+                    show={slide}
+                    onClose={(val) => setSlide(val)}
+                    title={"Update Cuy"}
+                >
+                    <div>Hellow Gaes</div>
+                </SlidePanel>
                 <div
                     className="flex w-full flex-col items-center space-y-3 p-5 !pl-[260px] "
                     id="content"
                 >
                     <Content title="Must be static" className="">
                         <Dropdown items={ActionMenu} />
-                        <Button
-                            data-te-sidenav-toggle-ref
-                            data-te-target="#sidenav-2"
-                            aria-controls="#sidenav-2"
-                            aria-haspopup="true"
-                        >
-                            Sidebar
-                        </Button>
-                        <Button
-                            data-te-sidenav-toggle-ref
-                            data-te-target="#sideEditor"
-                            aria-controls="#sideEditor"
-                            aria-haspopup="true"
-                        >
-                            Editor
+                        <Button onClick={() => setSlide(true)}>
+                            Slide Open
                         </Button>
                     </Content>
                     <Content title="Joki Priceless" className="max-w-lg">

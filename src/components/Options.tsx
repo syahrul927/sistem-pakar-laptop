@@ -55,7 +55,7 @@ const ItemOption: React.FC<ItemProps> = (props) => {
     const ref = useRef<HTMLInputElement>(null);
     return (
         <div
-            className={`flex cursor-pointer select-none items-center justify-start space-x-3 rounded-full bg-zinc-100 px-6 py-3 text-sm dark:bg-zinc-600`}
+            className={`flex cursor-pointer select-none items-center justify-start space-x-3 rounded-md bg-zinc-200 px-6 py-3 text-sm hover:bg-zinc-400/20 dark:bg-zinc-700 dark:hover:bg-white/20`}
             onClick={() => {
                 if (ref && ref.current) {
                     ref.current.checked = !ref.current.checked;
@@ -70,7 +70,7 @@ const ItemOption: React.FC<ItemProps> = (props) => {
                 checked={selected}
                 onChange={() => onChange(id)}
             />
-            <div>{text}</div>
+            <div className="text-black dark:text-white">{text}</div>
         </div>
     );
 };

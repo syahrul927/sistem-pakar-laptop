@@ -2,106 +2,60 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "./Button";
-import Dropdown, { DropdownProps } from "./Dropdown";
-import ThemeToggle from "./ThemeToggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import ThemeToggle from "./ThemeToggle";
+
+const navigation = [
+    { name: "Home", href: "#", current: false },
+    { name: "Article", href: "#", current: false },
+    { name: "About", href: "#", current: false },
+];
 const Header = () => {
     return (
         <header>
-            <nav
-                className="relative flex w-full items-center justify-between py-2 text-neutral-600 hover:text-neutral-700 focus:text-neutral-700 dark:text-neutral-200 md:flex-wrap md:justify-start"
-                data-te-navbar-ref
-            >
-                <div className="flex w-full flex-wrap items-center justify-between px-6">
-                    <div className="flex items-center">
-                        <button
-                            className="mr-2 border-0 bg-transparent py-2 text-xl leading-none transition-shadow duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white lg:hidden"
-                            type="button"
-                            data-te-collapse-init
-                            data-te-target="#navbarSupportedContentX"
-                            aria-controls="navbarSupportedContentX"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation"
-                        >
-                            <span className="[&>svg]:w-5">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1.5"
-                                    stroke="currentColor"
-                                    className="h-6 w-6"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                                    />
-                                </svg>
-                            </span>
-                        </button>
-                    </div>
-                    <div
-                        className="!visible hidden grow basis-[100%] items-center lg:!flex lg:basis-auto"
-                        id="navbarSupportedContentX"
-                        data-te-collapse-item
+            <div className="dropdown md:hidden">
+                <label tabIndex={0} className="btn-ghost btn md:hidden">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
                     >
-                        <ul
-                            className="mr-auto flex w-full flex-col lg:flex-row"
-                            data-te-navbar-nav-ref
-                        >
-                            <li data-te-nav-item-ref>
-                                <a
-                                    className="block transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:hover:text-white dark:focus:text-white lg:p-2 [&.active]:text-black/90"
-                                    href="#!"
-                                    data-te-nav-link-ref
-                                    data-te-ripple-init
-                                    data-te-ripple-color="light"
-                                >
-                                    Home
-                                </a>
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 6h16M4 12h8m-8 6h16"
+                        />
+                    </svg>
+                </label>
+                <ul
+                    tabIndex={0}
+                    className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-white p-2 shadow dark:bg-zinc-800"
+                >
+                    {navigation.map((item) => (
+                        <li key={`nav-${item.name}`}>
+                            <a>{item.name}</a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="navbar hidden bg-white dark:bg-zinc-800 md:flex">
+                <div className="flex-1">
+                    <ul className="menu menu-horizontal px-1">
+                        {navigation.map((item) => (
+                            <li key={`nav-${item.name}`}>
+                                <a>{item.name}</a>
                             </li>
-                            <li data-te-nav-item-ref>
-                                <a
-                                    className="block transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:hover:text-white dark:focus:text-white lg:p-2 [&.active]:text-black/90"
-                                    href="#!"
-                                    data-te-nav-link-ref
-                                    data-te-ripple-init
-                                    data-te-ripple-color="light"
-                                >
-                                    Article
-                                </a>
-                            </li>
-                            <li data-te-nav-item-ref>
-                                <a
-                                    className="block transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:hover:text-white dark:focus:text-white lg:p-2 [&.active]:text-black/90"
-                                    href="#!"
-                                    data-te-nav-link-ref
-                                    data-te-ripple-init
-                                    data-te-ripple-color="light"
-                                >
-                                    About
-                                </a>
-                            </li>
-                            <li data-te-nav-item-ref>
-                                {/* <Link
-                                    href="/admin/login"
-                                    className="block transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 disabled:text-black/30 dark:hover:text-white dark:focus:text-white lg:p-2 [&.active]:text-black/90"
-                                    data-te-nav-link-ref
-                                    data-te-ripple-init
-                                    data-te-ripple-color="light"
-                                >
-                                    Login As Admin
-                                </Link> */}
-                            </li>
-                            <li data-te-nav-item-ref className="flex-1">
-                                <AuthShowcase />
-                            </li>
-                        </ul>
-                    </div>
+                        ))}
+                    </ul>
                 </div>
-            </nav>
+                <div className="flex-none">
+                    <AuthShowcase />
+                </div>
+            </div>
             <section className="relative mb-6 flex h-80 items-center justify-center">
                 <div className="absolute h-full w-full overflow-hidden">
                     <Image
@@ -130,48 +84,37 @@ const Header = () => {
 export default Header;
 const AuthShowcase: React.FC = () => {
     const { data: sessionData, status } = useSession();
-
-    // const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    //     undefined, // no input
-    //     { enabled: sessionData?.user !== undefined }
-    // );
-    const AccountAction: DropdownProps[] = [
-        {
-            children: sessionData?.user.name,
-        },
-        {
-            children: "Logout",
-            action: () => void signOut(),
-        },
-    ];
     return status === "loading" ? (
         <div>Loading...</div>
     ) : sessionData ? (
-        <div className="flex h-full flex-col items-start justify-start space-x-3 lg:flex-row lg:items-center lg:justify-end lg:pr-20">
-            <Dropdown
-                items={AccountAction}
-                component={
-                    sessionData.user.image ? (
-                        <Image
-                            width={30}
-                            height={30}
-                            src={sessionData.user.image}
-                            alt="image"
-                            className="rounded-full"
-                        />
-                    ) : (
-                        <FontAwesomeIcon icon={faUser} />
-                    )
-                }
-            />
-            <ThemeToggle />
+        <div className="dropdown dropdown-end">
+            <div
+                tabIndex={0}
+                className="m-1 flex cursor-pointer flex-row items-center justify-center space-x-3  px-5"
+            >
+                <p>{sessionData.user.name}</p>
+                <FontAwesomeIcon icon={faUser} />
+            </div>
+            <ul
+                tabIndex={0}
+                className="dropdown-content menu rounded-box w-52 bg-white p-2 shadow dark:bg-zinc-800"
+            >
+                <li>
+                    <div>
+                        <ThemeToggle />
+                    </div>
+                </li>
+                {sessionData.user.type.toLowerCase() === "admin" && (
+                    <li>
+                        <Link href={"/dashboard"}>Dashboard</Link>
+                    </li>
+                )}
+                <li onClick={() => void signOut()}>
+                    <a>Sign out</a>
+                </li>
+            </ul>
         </div>
     ) : (
-        <div
-            className="flex h-full cursor-pointer select-none flex-col items-start justify-start space-x-3 lg:flex-row lg:items-center lg:justify-end lg:pr-20"
-            onClick={sessionData ? () => void signOut() : () => void signIn()}
-        >
-            {status} | {sessionData ? "Sign out" : "Sign in"}
-        </div>
+        <div onClick={() => void signIn()}>Sign in</div>
     );
 };

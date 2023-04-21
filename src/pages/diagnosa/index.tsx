@@ -7,6 +7,7 @@ import Layout from "~/components/Layout";
 import Loading from "~/components/Loading";
 import Options from "~/components/Options";
 import ProgressBar from "~/components/ProgressBar";
+import ThemeToggle from "~/components/ThemeToggle";
 import { QuestionProps } from "~/type";
 import { api, RouterOutputs } from "~/utils/api";
 
@@ -65,7 +66,7 @@ const DiagnosaPage = () => {
     const onAction = useCallback((str: string[]) => setResult(str), []);
     if (isLoading) return <Loading />;
     return (
-        <div className="break-word bg-zinc-100 transition-colors duration-500  dark:border-zinc-900 dark:bg-zinc-700">
+        <div className="break-word bg-white transition-colors duration-500 dark:bg-zinc-800">
             <main className="flex h-screen w-full items-start justify-center">
                 <div className="flex h-full w-full flex-col px-10 pt-10">
                     <div className="w-full">
@@ -85,8 +86,8 @@ const DiagnosaPage = () => {
                         <p className="mb-2 text-xs font-semibold uppercase tracking-tight text-blue-400">
                             Gejala {currentPage}/{totalPage}
                         </p>
-                        <p className="mb-10 text-center text-xl font-bold">
-                            Pilih yang kamu alami{" "}
+                        <p className="mb-10 text-center text-xl font-bold capitalize text-black dark:text-white">
+                            pilih yang kamu alami!
                         </p>
                         <div className="w-full max-w-lg">
                             <Options
