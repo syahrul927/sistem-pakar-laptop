@@ -313,9 +313,6 @@ const dataCustomer: TableProps<ICustomerView> = {
 };
 const Dashboard: NextPage = () => {
     const [slide, setSlide] = useState(false);
-    useEffect(() => {
-        console.log("slide : ", slide);
-    }, [slide]);
     return (
         <>
             <Head>

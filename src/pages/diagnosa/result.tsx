@@ -31,7 +31,7 @@ const symptom: string[] = [
 const ResultPage: React.FC<{ results: MatchBar[] }> = ({ results }) => {
     const [array, setArray] = useState(result);
     return (
-        <div className="break-word bg-white transition-colors duration-500 dark:bg-zinc-700">
+        <div className="break-word bg-zinc-100 transition-colors duration-500 dark:bg-zinc-700">
             <main className="flex h-screen w-full items-center justify-center py-5">
                 <Content
                     title="Hasil Diagnosa gejala yang kamu alami"
