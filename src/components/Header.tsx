@@ -115,6 +115,11 @@ const AuthShowcase: React.FC = () => {
             </ul>
         </div>
     ) : (
-        <div onClick={() => void signIn()}>Sign in</div>
+        <div
+            className="m-1 flex cursor-pointer flex-row items-center justify-center space-x-3  px-5"
+            onClick={() => void signIn()}
+        >
+            Sign in
+        </div>
     );
 };
