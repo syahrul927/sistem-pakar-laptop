@@ -30,7 +30,7 @@ const DiagnosaPage = () => {
 
     const updatePage = (type: "inc" | "dec") => {
         if (type === "inc") {
-            if (currentPage === totalPage) router.push("/diagnosa/result");
+            if (currentPage === totalPage) void router.push("/diagnosa/result");
             setCurrentPage(currentPage + 1);
             return;
         }
