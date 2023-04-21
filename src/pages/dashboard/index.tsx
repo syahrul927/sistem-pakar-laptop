@@ -7,7 +7,9 @@ const Dashboard: NextPage = () => {
         <>
             <Layout>
                 <div className=" flex h-screen w-full items-start justify-center">
-                    <Content title="Dashboard Page" className=""></Content>
+                    <Content title="Dashboard Page" className="">
+                        Tempat menampilkan Dashboard
+                    </Content>
                 </div>
             </Layout>
         </>
