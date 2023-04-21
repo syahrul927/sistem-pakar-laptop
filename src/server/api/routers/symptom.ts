@@ -1,9 +1,9 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const symptomRouter = createTRPCRouter({
-    getAll: protectedProcedure.query(({ ctx }) => {
+    getAll: publicProcedure.query(({ ctx }) => {
         return ctx.prisma.symptom.findMany();
     }),
     getByCase: protectedProcedure
