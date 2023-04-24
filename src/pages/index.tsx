@@ -7,7 +7,7 @@ const Home: NextPage = () => {
     return (
         <>
             <Head>
-                <title>Take it Easy</title>
+                <title>Sistem Pakar Laptop</title>
                 <meta name="description" content="Learning purpose" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
