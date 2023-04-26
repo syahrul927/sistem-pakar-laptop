@@ -62,7 +62,7 @@ const Table = <T extends { [S: string]: string | ReactNode }>(
         <div className="flex flex-col">
             <div className="sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                    <div className="h-[80vh] overflow-y-auto">
+                    <div className="overflow-y-auto">
                         <table className="min-w-full text-left text-sm font-light">
                             <thead className="border-b font-medium dark:border-neutral-500">
                                 <tr>

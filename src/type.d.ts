@@ -31,3 +31,8 @@ export type ISymptomSelect = {
     description: string;
     weight: number;
 };
+
+export type ISelectedSymptom = {
+    no: string;
+    symptom: string;
+};

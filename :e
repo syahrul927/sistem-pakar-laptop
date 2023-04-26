@@ -1,4 +1,5 @@
 import Link from "next/link";
+import router from "next/router";
 import { useEffect, useState } from "react";
 import Button from "~/components/Button";
 import Content from "~/components/Content";
@@ -32,6 +33,7 @@ const symptom: string[] = [
     "Laptop tidak bisa mengenali perangkat Bluetooth",
 ];
 const ResultPage: React.FC<{ results: MatchBar[] }> = ({ results }) => {
+    const { id } = router.query;
     const [dataTable, setDataTable] = useState<TableProps<ISelectedSymptom>>({
         data: symptom.map((item, index) => ({
             no: (index + 1).toString(),
@@ -47,6 +49,18 @@ const ResultPage: React.FC<{ results: MatchBar[] }> = ({ results }) => {
                 title: "Gejala",
             },
         ],
+    });
+    api.diagnose.getDiagnose.useQuery(String(id) || null, {
+        onSuccess: (data) => {
+            const newData: ISelectedSymptom[] = data.symptoms.map(
+                (item, index) => ({
+                    no: index.toString(),
+                    symptom: item.description,
+                })
+            );
+            const newDataTable = { ...dataTable, data: [...newData] };
+            setDataTable(newDataTable);
+        },
     });
     const [array, setArray] = useState(result);
     return (

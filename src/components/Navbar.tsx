@@ -5,9 +5,9 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import ThemeToggle from "./ThemeToggle";
 
 const navigation = [
-    { name: "Home", href: "#", current: false },
-    { name: "Article", href: "#", current: false },
-    { name: "About", href: "#", current: false },
+    { name: "Home", href: "/", current: false },
+    { name: "Article", href: "/article", current: false },
+    { name: "About", href: "/about", current: false },
 ];
 const Navbar = () => {
     return (
@@ -35,7 +35,7 @@ const Navbar = () => {
                 >
                     {navigation.map((item) => (
                         <li key={`nav-${item.name}`}>
-                            <a>{item.name}</a>
+                            <Link href={item.href}>{item.name}</Link>
                         </li>
                     ))}
                 </ul>
@@ -45,7 +45,7 @@ const Navbar = () => {
                     <ul className="menu menu-horizontal px-1">
                         {navigation.map((item) => (
                             <li key={`nav-${item.name}`}>
-                                <a>{item.name}</a>
+                                <Link href={item.href}>{item.name}</Link>
                             </li>
                         ))}
                     </ul>

@@ -1,0 +1,96 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Account {
+  id String [pk]
+  userId String [not null]
+  type String [not null]
+  provider String [not null]
+  providerAccountId String [not null]
+  refresh_token String
+  access_token String
+  expires_at Int
+  token_type String
+  scope String
+  id_token String
+  session_state String
+
+  indexes {
+    (provider, providerAccountId) [unique]
+  }
+}
+
+Table Session {
+  id String [pk]
+  sessionToken String [unique, not null]
+  userId String [not null]
+  expires DateTime [not null]
+}
+
+Table User {
+  id String [pk]
+  name String
+  email String [unique]
+  type String [not null, default: 'public']
+  emailVerified DateTime
+  password String
+  image String
+}
+
+Table VerificationToken {
+  identifier String [not null]
+  token String [unique, not null]
+  expires DateTime [not null]
+
+  indexes {
+    (identifier, token) [unique]
+  }
+}
+
+Table Case {
+  id Int [pk, increment]
+  problem String [not null]
+  solution String [not null]
+  date DateTime [not null]
+}
+
+Table Symptom {
+  id Int [pk, increment]
+  description String [not null]
+  weight Float [not null]
+}
+
+Table CaseSymptom {
+  id Int [pk, increment]
+  caseId Int [not null]
+  symptomId Int [not null]
+}
+
+Table HistoryDiagnosa {
+  id String [pk]
+  userId String
+  date DateTime [default: `now()`, not null]
+  symptomId Int[] [not null]
+}
+
+Table DetailHistoryDiagnosa {
+  id String [pk]
+  historyId String [not null]
+  similarity Float [not null]
+  caseId Int [not null]
+}
+
+Ref: Account.userId > User.id [delete: Cascade]
+
+Ref: Session.userId > User.id [delete: Cascade]
+
+Ref: CaseSymptom.caseId > Case.id
+
+Ref: CaseSymptom.symptomId > Symptom.id
+
+Ref: HistoryDiagnosa.userId > User.id
+
+Ref: DetailHistoryDiagnosa.historyId > HistoryDiagnosa.id
+
+Ref: DetailHistoryDiagnosa.caseId > Case.id

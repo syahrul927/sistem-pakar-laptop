@@ -32,9 +32,11 @@ export const caseRouter = createTRPCRouter({
                         problem: input.problem,
                         solution: input.solution,
                         CaseSymptom: {
-                            create: symptom.map((item) => ({
-                                symptomId: item,
-                            })),
+                            createMany: {
+                                data: symptom.map((item) => ({
+                                    symptomId: item,
+                                })),
+                            },
                         },
                     },
                     where: {

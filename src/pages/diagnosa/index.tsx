@@ -3,11 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import Button from "~/components/Button";
-import Layout from "~/components/Layout";
 import Loading from "~/components/Loading";
 import Options from "~/components/Options";
 import ProgressBar from "~/components/ProgressBar";
-import ThemeToggle from "~/components/ThemeToggle";
 import { QuestionProps } from "~/type";
 import { api, RouterOutputs } from "~/utils/api";
 
@@ -22,15 +20,26 @@ const DiagnosaPage = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPage, setTotalPage] = useState<number>(0);
 
-    const { refetch, isLoading } = api.symptom.getAll.useQuery(undefined, {
+    const { isLoading } = api.symptom.getAll.useQuery(undefined, {
         onSuccess: (data) => {
             setSymptom(data);
         },
     });
 
+    const diagnose = api.diagnose.diagnose.useMutation({
+        onSuccess: (data) => {
+            void router.push(`/diagnosa/result/${data}`);
+        },
+    });
+
     const updatePage = (type: "inc" | "dec") => {
         if (type === "inc") {
-            if (currentPage === totalPage) void router.push("/diagnosa/result");
+            if (currentPage === totalPage) {
+                diagnose.mutate({
+                    symptoms: result.map((item) => Number(item)),
+                });
+                return;
+            }
             setCurrentPage(currentPage + 1);
             return;
         }

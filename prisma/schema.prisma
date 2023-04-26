@@ -5,10 +5,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator erd {
-  provider                  = "prisma-erd-generator"
-  output                    = "../ERD.svg"
-  includeRelationFromFields = true
+generator dbml {
+  provider              = "prisma-dbml-generator"
+  includeRelationFields = false
 }
 
 datasource db {
@@ -70,21 +69,20 @@ model VerificationToken {
 
 // Tabel Kasus
 model Case {
-  id          Int           @id @default(autoincrement())
-  problem     String
-  solution    String
-  date        DateTime
-  CaseSymptom CaseSymptom[]
+  id                    Int                     @id @default(autoincrement())
+  problem               String
+  solution              String
+  date                  DateTime
+  CaseSymptom           CaseSymptom[]
+  DetailHistoryDiagnosa DetailHistoryDiagnosa[]
 }
 
 // Tabel Gejala
 model Symptom {
-  id                Int              @id @default(autoincrement())
-  description       String
-  weight            Float
-  CaseSymptom       CaseSymptom[]
-  HistoryDiagnosa   HistoryDiagnosa? @relation(fields: [historyDiagnosaId], references: [id])
-  historyDiagnosaId Int?
+  id          Int           @id @default(autoincrement())
+  description String
+  weight      Float
+  CaseSymptom CaseSymptom[]
 }
 
 // Tabel Korelasi Kasus-Gejala
@@ -98,11 +96,19 @@ model CaseSymptom {
 
 // Tabel HistoryDiagnosa
 model HistoryDiagnosa {
-  id       Int       @id @default(autoincrement())
-  user     User?     @relation(fields: [userId], references: [id])
-  userId   String?
-  date     DateTime  @default(now())
-  problem  String
-  solution String
-  symptoms Symptom[]
+  id                    String                  @id @default(cuid())
+  user                  User?                   @relation(fields: [userId], references: [id])
+  userId                String?
+  date                  DateTime                @default(now())
+  DetailHistoryDiagnosa DetailHistoryDiagnosa[]
+  symptomId             Int[]
+}
+
+model DetailHistoryDiagnosa {
+  id              String          @id @default(cuid())
+  historyId       String
+  historyDiagnosa HistoryDiagnosa @relation(fields: [historyId], references: [id])
+  similarity      Float
+  caseId          Int
+  case            Case            @relation(fields: [caseId], references: [id])
 }
