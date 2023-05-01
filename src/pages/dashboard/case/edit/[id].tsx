@@ -1,8 +1,10 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NextPage } from "next";
+import { Case } from "@prisma/client";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
+import { FormActionType } from "~/common/FormActionType";
 import Button from "~/components/Button";
 import Content from "~/components/Content";
 import Layout from "~/components/Layout";
@@ -12,28 +14,32 @@ import SlidePanel from "~/components/SlidePanel";
 import TextArea from "~/components/TextArea";
 import TextInput from "~/components/TextInput";
 import { useToastContext } from "~/hook/ToastHooks";
+import { ISymptomSelect } from "~/type";
 import { api, RouterOutputs } from "~/utils/api";
 
 type Symptom = RouterOutputs["symptom"]["getAll"];
 
-const AddCasePage: NextPage = () => {
+const FormCasePage: NextPage = () => {
+    const router = useRouter();
+    const { id } = router.query;
+
+    const [kasus, setKasus] = useState<Case>();
     const [problem, setProblem] = useState<string>("");
     const [descSympt, setDescSympt] = useState<string>();
     const [weightSympt, setWeightSympt] = useState<number>();
     const [solution, setSolution] = useState<string>("");
     const [symptoms, setSymptoms] = useState<Symptom>([]);
-    const [selectedSymp, setSelectedSymp] = useState<number[]>([]);
+    const [selectedSymp, setSelectedSymp] = useState<Symptom>([]);
     const [slide, setSlide] = useState<boolean>(false);
 
     const [, setToast] = useToastContext();
-    const router = useRouter();
 
     const saveSymptom = () => {
         if (!descSympt || !weightSympt) {
             toastError();
             return;
         }
-        mutateSympt({ weight: weightSympt, description: descSympt });
+        mutateSympt({ id: null, weight: weightSympt, description: descSympt });
     };
     const toastError = () => {
         setToast({
@@ -52,16 +58,18 @@ const AddCasePage: NextPage = () => {
             return;
         }
         mutateCase({
-            id: null,
+            id: kasus ? kasus.id : null,
             solution: solution,
             problem: problem,
             symptom: [...selectedSymp],
         });
     };
     const onChangeSymptom = useCallback(
-        (id: number) => {
-            if (selectedSymp.includes(id)) {
-                setSelectedSymp(selectedSymp.filter((item) => item !== id));
+        (id: ISymptomSelect) => {
+            if (selectedSymp.filter((item) => item.id === id.id).length > 0) {
+                setSelectedSymp(
+                    selectedSymp.filter((item) => item.id !== id.id)
+                );
                 return;
             }
             setSelectedSymp([...selectedSymp, id]);
@@ -74,8 +82,27 @@ const AddCasePage: NextPage = () => {
                 setSymptoms(data);
             },
         });
+    const { refetch: refetchGetCase, isLoading: isLoadingGetCase } =
+        api.case.getById.useQuery(Number(id || null), {
+            onSuccess: (data) => {
+                if (data) {
+                    setKasus(data);
+                    setProblem(data.problem);
+                    setSolution(data.solution);
+                    setSelectedSymp(
+                        data.CaseSymptom.map((item) => item.symptom)
+                    );
+                    return;
+                }
+                void router.push("/404");
+            },
+            onError: (err) => {
+                void router.push("/404");
+            },
+            enabled: false,
+        });
     const { mutate: mutateSympt, isLoading: isLoadingCreateSympt } =
-        api.symptom.create.useMutation({
+        api.symptom.createOrUpdate.useMutation({
             onSuccess: () => {
                 setToast({
                     show: true,
@@ -120,6 +147,9 @@ const AddCasePage: NextPage = () => {
             setDescSympt("");
         }
     }, [slide]);
+    useEffect(() => {
+        void refetchGetCase();
+    }, [id, refetchGetCase]);
 
     return (
         <Layout>
@@ -147,6 +177,11 @@ const AddCasePage: NextPage = () => {
                                     description: item.description,
                                     weight: item.weight,
                                 }))}
+                                selected={selectedSymp.map((item) => ({
+                                    id: item.id,
+                                    description: item.description,
+                                    weight: item.weight,
+                                }))}
                                 onChange={onChangeSymptom}
                             />
                         )}
@@ -156,7 +191,7 @@ const AddCasePage: NextPage = () => {
                                 <FontAwesomeIcon icon={faPlus} />
                             </Button>
                         </div>
-                        {isLoadingCreateCase ? (
+                        {isLoadingCreateCase || isLoadingGetCase ? (
                             <Loading />
                         ) : (
                             <div className="flex w-full justify-end">
@@ -165,7 +200,7 @@ const AddCasePage: NextPage = () => {
                                         saveCase(
                                             problem,
                                             solution,
-                                            selectedSymp
+                                            selectedSymp.map((item) => item.id)
                                         )
                                     }
                                 >
@@ -205,4 +240,4 @@ const AddCasePage: NextPage = () => {
         </Layout>
     );
 };
-export default AddCasePage;
+export default FormCasePage;

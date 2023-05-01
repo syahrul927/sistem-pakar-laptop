@@ -7,14 +7,14 @@ import TextInput from "./TextInput";
 
 interface MultipleSelectProps {
     data: ISymptomSelect[];
-    onChange: (id: number) => void;
+    selected: ISymptomSelect[];
+    onChange: (id: ISymptomSelect) => void;
 }
 
 const MultipleSelect: React.FC<MultipleSelectProps> = (props) => {
-    const { data: dataOri, onChange } = props;
+    const { data: dataOri, onChange, selected } = props;
     const [text, setText] = useState("");
     const [suggest, setSuggest] = useState<ISymptomSelect[]>([]);
-    const [selected, setSelected] = useState<ISymptomSelect[]>([]);
     useEffect(() => {
         if (text) {
             setSuggest(
@@ -30,26 +30,24 @@ const MultipleSelect: React.FC<MultipleSelectProps> = (props) => {
         }
     }, [text, dataOri]);
     const onSelect = (id: string) => {
-        const ids = parseInt(id);
-        const exist = selected.find((item) => item.id === ids);
-        if (exist) {
-            setText("");
-            return;
-        }
-        const source = dataOri.find((item) => item.id === ids);
+        // const exist = selected.find((item) => item.id === ids);
+        // if (exist) {
+        //     setText("");
+        //     return;
+        // }
+        const source = dataOri.find((item) => item.id === parseInt(id));
         if (source) {
-            onChange(ids);
-            setSelected([...selected, source]);
+            onChange(source);
         }
         setText("");
     };
-    const onDelete = (id: number) => {
-        setSelected(selected.filter((item) => item.id !== id));
+    const onDelete = (id: ISymptomSelect) => {
+        // setSelected(selected.filter((item) => item.id !== id));
         onChange(id);
     };
     return (
         <>
-            <div className="dropdown dropdown-bottom  w-full">
+            <div className="dropdown-bottom dropdown  w-full">
                 <TextInput
                     tabIndex={1}
                     value={text}
@@ -77,7 +75,7 @@ const MultipleSelect: React.FC<MultipleSelectProps> = (props) => {
                                 key={`selected-${idx}`}
                                 description={item.description}
                                 weight={item.weight}
-                                onDelete={() => onDelete(item.id)}
+                                onDelete={() => onDelete(item)}
                             />
                         ))
                     ) : (

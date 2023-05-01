@@ -9,6 +9,7 @@ import Button from "~/components/Button";
 import Content from "~/components/Content";
 import Layout from "~/components/Layout";
 import Loading from "~/components/Loading";
+import Modal from "~/components/Modal";
 import SlidePanel from "~/components/SlidePanel";
 import Table, { TableProps } from "~/components/Table";
 import { useToastContext } from "~/hook/ToastHooks";
@@ -16,9 +17,10 @@ import { ICaseViewTable } from "~/type";
 import { RouterOutputs, api } from "~/utils/api";
 
 type Symptom = RouterOutputs["symptom"]["getByCase"];
-const GejalaPage: NextPage = () => {
+const CasePage: NextPage = () => {
     const router = useRouter();
     const [slide, setSlide] = useState(false);
+    const [modal, setModal] = useState(false);
     const [symptom, setSymptom] = useState<Symptom>([]);
     const [, setToast] = useToastContext();
     const [selectedCase, setSelectedCase] = useState<Case>();
@@ -26,8 +28,8 @@ const GejalaPage: NextPage = () => {
         data: [],
         column: [
             {
-                id: "id",
-                title: "ID",
+                id: "no",
+                title: "No",
             },
             {
                 id: "problem",
@@ -65,40 +67,59 @@ const GejalaPage: NextPage = () => {
                 enabled: false,
             }
         );
+    const { mutate: mutateDeleteCase } = api.case.deleteById.useMutation({
+        onSuccess: () => {
+            void refetchGetAll();
+            setToast({
+                type: "SUCCESS",
+                show: true,
+                message: "Berhasil hapus data",
+            });
+        },
+    });
     const onShow = (data: Case) => {
         setSelectedCase(data);
         setSlide(true);
     };
     const onEdit = (id: Case) => {
         // TODO
-        void router.push("/dashboard/case/edit?" + id.toString());
+        void router.push("/dashboard/case/edit/" + id.id.toString());
     };
     const onDelete = (id: Case) => {
-        // TODO
+        setModal(true);
+        setSelectedCase(id);
     };
 
-    const { isLoading } = api.case.getAll.useQuery(undefined, {
-        onSuccess: (data) => {
-            const newData = data.map(
-                (item) =>
-                    ({
-                        id: item.id.toString(),
-                        problem: item.problem,
-                        solution: item.solution,
-                        tools: (
-                            <Tools
-                                id={item}
-                                onShow={onShow}
-                                onEdit={onEdit}
-                                onDelete={onDelete}
-                            />
-                        ),
-                    } as ICaseViewTable)
-            );
-            const newDataTables = { ...dataTable, data: newData };
-            setDataTable(newDataTables);
-        },
-    });
+    const { isLoading, refetch: refetchGetAll } = api.case.getAll.useQuery(
+        undefined,
+        {
+            onSuccess: (data) => {
+                const newData = data.map(
+                    (item, idx) =>
+                        ({
+                            no: idx + 1,
+                            id: item.id.toString(),
+                            problem: item.problem,
+                            solution: item.solution,
+                            className:
+                                item._count.CaseSymptom > 0
+                                    ? ""
+                                    : "bg-red-100 dark: bg-red-950",
+                            tools: (
+                                <Tools
+                                    id={item}
+                                    onShow={onShow}
+                                    onEdit={onEdit}
+                                    onDelete={onDelete}
+                                />
+                            ),
+                        } as ICaseViewTable)
+                );
+                const newDataTables = { ...dataTable, data: newData };
+                setDataTable(newDataTables);
+            },
+        }
+    );
 
     useEffect(() => {
         if (!slide) {
@@ -141,18 +162,21 @@ const GejalaPage: NextPage = () => {
                     <div className="flex flex-col space-y-3">
                         <div>
                             <p className="font-semibold">Masalah</p>
-                            <p>{selectedCase?.problem}</p>
+                            <p className="font-light text-gray-600 dark:text-gray-300">
+                                {selectedCase?.problem}
+                            </p>
                         </div>
                         <div>
                             <p className="font-semibold">Solusi</p>
-                            <p>{selectedCase?.solution}</p>
+                            <p className="font-light text-gray-600 dark:text-gray-300">
+                                {selectedCase?.solution}
+                            </p>
                         </div>
                     </div>
                     <div className="flex flex-col space-y-3">
                         <p className="font-semibold">Gejala Terkait</p>
-                        {isLoadingDetail ? (
-                            <Loading />
-                        ) : symptom.length ? (
+                        {isLoadingDetail && <Loading />}
+                        {symptom.length ? (
                             symptom.map((item) => (
                                 <div
                                     key={`item-key-${item.description}`}
@@ -169,15 +193,49 @@ const GejalaPage: NextPage = () => {
                                 </div>
                             ))
                         ) : (
-                            <div>Tidak memiliki gejala</div>
+                            <p className="font-light text-gray-600 dark:text-gray-300">
+                                Tidak memiliki gejala
+                            </p>
                         )}
                     </div>
                 </div>
             </SlidePanel>
+            <Modal
+                show={modal}
+                title="Perhatian!"
+                message="Apakah kamu yakin ingin menghapus ini ?"
+                action={
+                    <>
+                        <label
+                            onClick={() => {
+                                setSelectedCase(undefined);
+                                setModal(false);
+                            }}
+                            htmlFor="my-modal"
+                            className="btn-outline btn"
+                        >
+                            Tidak
+                        </label>
+                        <label
+                            onClick={() => {
+                                if (selectedCase) {
+                                    mutateDeleteCase(selectedCase.id);
+                                }
+                                setSelectedCase(undefined);
+                                setModal(false);
+                            }}
+                            htmlFor="my-modal"
+                            className="btn-error btn"
+                        >
+                            Ya
+                        </label>
+                    </>
+                }
+            />
         </Layout>
     );
 };
-export default GejalaPage;
+export default CasePage;
 
 const Tools: React.FC<{
     id: Case;

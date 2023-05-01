@@ -42,7 +42,7 @@ const listMenu: SidebarProps[] = [
     },
     {
         title: "History Diagnosa",
-        href: "/dashboard/diagnosa",
+        href: "/dashboard/diagnose",
         icon: <FontAwesomeIcon icon={faDiagnoses} />,
     },
     {

@@ -6,7 +6,6 @@ import Table, { TableProps } from "~/components/Table";
 import { ISelectedSymptom } from "~/type";
 import { api, RouterOutputs } from "~/utils/api";
 import { useRouter } from "next/router";
-import Header from "~/components/Header";
 import Navbar from "~/components/Navbar";
 
 interface MatchBar {
@@ -32,7 +31,6 @@ const ResultPage: React.FC<{ results: MatchBar[] }> = ({ results }) => {
             },
         ],
     });
-    console.log("id:", id);
     api.diagnose.getDiagnose.useQuery(String(id) || null, {
         onSuccess: (data) => {
             setDetail(data.case.sort((a, b) => b.similarity - a.similarity));
@@ -52,7 +50,7 @@ const ResultPage: React.FC<{ results: MatchBar[] }> = ({ results }) => {
             <main className="flex h-screen w-full items-start justify-center overflow-y-auto py-5">
                 <Content
                     title="Hasil Kasus Diagnosa"
-                    className="h-auto w-[70%]"
+                    className="mb-5 h-auto w-[70%]"
                 >
                     <div className="flex w-full  flex-col space-y-12 rounded-md border p-5">
                         {detail &&

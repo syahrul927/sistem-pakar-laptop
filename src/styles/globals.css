@@ -11,3 +11,6 @@ body {
     text-rendering: optimizeLegibility;
     overflow-wrap: break-word;
 }
+.btn {
+    @apply capitalize;
+}

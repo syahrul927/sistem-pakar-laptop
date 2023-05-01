@@ -12,21 +12,23 @@ import SlidePanel from "~/components/SlidePanel";
 import TextArea from "~/components/TextArea";
 import TextInput from "~/components/TextInput";
 import { useToastContext } from "~/hook/ToastHooks";
+import { ISymptomSelect } from "~/type";
 import { api, RouterOutputs } from "~/utils/api";
 
 type Symptom = RouterOutputs["symptom"]["getAll"];
 
-const AddCasePage: NextPage = () => {
+const FormCasePage: NextPage = () => {
+    const router = useRouter();
+
     const [problem, setProblem] = useState<string>("");
     const [descSympt, setDescSympt] = useState<string>();
     const [weightSympt, setWeightSympt] = useState<number>();
     const [solution, setSolution] = useState<string>("");
     const [symptoms, setSymptoms] = useState<Symptom>([]);
-    const [selectedSymp, setSelectedSymp] = useState<number[]>([]);
+    const [selectedSymp, setSelectedSymp] = useState<Symptom>([]);
     const [slide, setSlide] = useState<boolean>(false);
 
     const [, setToast] = useToastContext();
-    const router = useRouter();
 
     const saveSymptom = () => {
         if (!descSympt || !weightSympt) {
@@ -59,9 +61,11 @@ const AddCasePage: NextPage = () => {
         });
     };
     const onChangeSymptom = useCallback(
-        (id: number) => {
-            if (selectedSymp.includes(id)) {
-                setSelectedSymp(selectedSymp.filter((item) => item !== id));
+        (id: ISymptomSelect) => {
+            if (selectedSymp.filter((item) => item.id === id.id).length > 0) {
+                setSelectedSymp(
+                    selectedSymp.filter((item) => item.id !== id.id)
+                );
                 return;
             }
             setSelectedSymp([...selectedSymp, id]);
@@ -75,7 +79,7 @@ const AddCasePage: NextPage = () => {
             },
         });
     const { mutate: mutateSympt, isLoading: isLoadingCreateSympt } =
-        api.symptom.create.useMutation({
+        api.symptom.createOrUpdate.useMutation({
             onSuccess: () => {
                 setToast({
                     show: true,
@@ -120,7 +124,6 @@ const AddCasePage: NextPage = () => {
             setDescSympt("");
         }
     }, [slide]);
-
     return (
         <Layout>
             <Content title="Halaman Tambah Kasus" className="w-full">
@@ -147,6 +150,11 @@ const AddCasePage: NextPage = () => {
                                     description: item.description,
                                     weight: item.weight,
                                 }))}
+                                selected={selectedSymp.map((item) => ({
+                                    id: item.id,
+                                    description: item.description,
+                                    weight: item.weight,
+                                }))}
                                 onChange={onChangeSymptom}
                             />
                         )}
@@ -165,7 +173,7 @@ const AddCasePage: NextPage = () => {
                                         saveCase(
                                             problem,
                                             solution,
-                                            selectedSymp
+                                            selectedSymp.map((item) => item.id)
                                         )
                                     }
                                 >
@@ -205,4 +213,4 @@ const AddCasePage: NextPage = () => {
         </Layout>
     );
 };
-export default AddCasePage;
+export default FormCasePage;

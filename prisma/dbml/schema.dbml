@@ -65,6 +65,10 @@ Table CaseSymptom {
   id Int [pk, increment]
   caseId Int [not null]
   symptomId Int [not null]
+
+  indexes {
+    (caseId, symptomId) [unique]
+  }
 }
 
 Table HistoryDiagnosa {

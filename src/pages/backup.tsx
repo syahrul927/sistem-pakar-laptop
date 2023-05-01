@@ -10,7 +10,7 @@ import { faFileEdit, faGear, faStar } from "@fortawesome/free-solid-svg-icons";
 import TextInput from "~/components/TextInput";
 import Table, { TableProps } from "~/components/Table";
 import { ICustomerView } from "~/type";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const ActionMenu: DropdownItemProps[] = [
     {

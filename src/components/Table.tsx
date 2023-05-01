@@ -81,17 +81,23 @@ const Table = <T extends { [S: string]: string | ReactNode }>(
                             </thead>
                             <tbody>
                                 {list.map((item, idx) => {
+                                    let className = "";
+                                    if (typeof item.className === "string") {
+                                        className = item.className;
+                                    }
                                     return (
                                         <tr
-                                            className="border-b dark:border-neutral-500"
+                                            className={`border-b dark:border-neutral-500 ${className}`}
                                             key={idx}
                                         >
                                             {props.column.map((col) => {
+                                                if (col.id === "className")
+                                                    return;
                                                 const value =
                                                     item[col.id] || "[Empty]";
                                                 return (
                                                     <td
-                                                        className="max-w-sm truncate whitespace-nowrap px-6 py-4 font-medium"
+                                                        className={`max-w-sm truncate whitespace-nowrap px-6 py-4 font-medium `}
                                                         key={`col-${makeid(4)}`}
                                                     >
                                                         {value}

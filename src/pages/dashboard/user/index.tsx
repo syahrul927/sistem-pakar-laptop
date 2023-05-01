@@ -16,6 +16,10 @@ const UserPage: NextPage = () => {
         data: [],
         column: [
             {
+                id: "no",
+                title: "No",
+            },
+            {
                 id: "id",
                 title: "ID",
             },
@@ -36,8 +40,9 @@ const UserPage: NextPage = () => {
     const { isLoading } = api.user.getAll.useQuery(undefined, {
         onSuccess: (data) => {
             const newData = data.map(
-                (item) =>
+                (item, idx) =>
                     ({
+                        no: idx + 1,
                         id: item.id,
                         nama: item.name,
                         email: item.email,

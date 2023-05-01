@@ -13,16 +13,34 @@ export type ICustomerView = {
 };
 
 export type IUserViewTable = {
+    no: number;
     id: string;
     nama: string;
     email: string;
     type: string;
 };
 
+export type IHistoryViewTable = {
+    id: string;
+    email: string;
+    name: string;
+    date: string;
+    tools: ReactNode;
+};
+
 export type ICaseViewTable = {
+    no: number;
     id: string;
     problem: string;
     solution: string;
+    tools: ReactNode;
+    className?: string;
+};
+export type ISymptomViewTable = {
+    no: number;
+    id: string;
+    description: string;
+    weight: string;
     tools: ReactNode;
 };
 

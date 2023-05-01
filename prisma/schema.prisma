@@ -92,6 +92,8 @@ model CaseSymptom {
   symptomId Int
   case      Case    @relation(fields: [caseId], references: [id])
   symptom   Symptom @relation(fields: [symptomId], references: [id])
+
+  @@unique([caseId, symptomId], name: "relationalCaseSymptom")
 }
 
 // Tabel HistoryDiagnosa
