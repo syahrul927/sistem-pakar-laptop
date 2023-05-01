@@ -35,7 +35,7 @@ const FormCasePage: NextPage = () => {
             toastError();
             return;
         }
-        mutateSympt({ weight: weightSympt, description: descSympt });
+        mutateSympt({ id: null, weight: weightSympt, description: descSympt });
     };
     const toastError = () => {
         setToast({
