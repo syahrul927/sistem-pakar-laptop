@@ -20,22 +20,26 @@ const DiagnosaPage = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPage, setTotalPage] = useState<number>(0);
 
-    const { isLoading } = api.symptom.getAll.useQuery(undefined, {
-        onSuccess: (data) => {
-            setSymptom(data);
-        },
-    });
+    const { isLoading: isLoadingGetAll } = api.symptom.getAll.useQuery(
+        undefined,
+        {
+            onSuccess: (data) => {
+                setSymptom(data);
+            },
+        }
+    );
 
-    const diagnose = api.diagnose.diagnose.useMutation({
-        onSuccess: (data) => {
-            void router.push(`/diagnosa/result/${data}`);
-        },
-    });
+    const { isLoading: isLoadingSubmit, mutate: mutateDiagnose } =
+        api.diagnose.diagnose.useMutation({
+            onSuccess: (data) => {
+                void router.push(`/diagnosa/result/${data}`);
+            },
+        });
 
     const updatePage = (type: "inc" | "dec") => {
         if (type === "inc") {
             if (currentPage === totalPage) {
-                diagnose.mutate({
+                mutateDiagnose({
                     symptoms: result.map((item) => Number(item)),
                 });
                 return;
@@ -73,7 +77,6 @@ const DiagnosaPage = () => {
         setTotalPage(Math.ceil(symptom.length / countPerPage));
     }, [symptom]);
     const onAction = useCallback((str: string[]) => setResult(str), []);
-    if (isLoading) return <Loading />;
     return (
         <div className="break-word bg-white transition-colors duration-500 dark:bg-zinc-800">
             <main className="flex h-screen w-full items-start justify-center">
@@ -99,20 +102,31 @@ const DiagnosaPage = () => {
                             pilih yang kamu alami!
                         </p>
                         <div className="w-full max-w-lg">
-                            <Options
-                                onAction={onAction}
-                                type="checkbox"
-                                list={currentSymptom}
-                            />
+                            {isLoadingGetAll ? (
+                                <div className="flex w-full items-center justify-center">
+                                    <Loading />
+                                </div>
+                            ) : (
+                                <Options
+                                    onAction={onAction}
+                                    type="checkbox"
+                                    list={currentSymptom}
+                                />
+                            )}
                         </div>
                     </div>
                     <div className="mt-5 flex flex-1 flex-row items-start justify-center space-x-5">
                         <Button onClick={() => updatePage("dec")}>
                             <FontAwesomeIcon icon={faArrowLeft} /> Sebelumnya
                         </Button>
-                        <Button onClick={() => updatePage("inc")}>
-                            Selanjutnya <FontAwesomeIcon icon={faArrowRight} />
-                        </Button>
+                        {isLoadingSubmit ? (
+                            <Loading />
+                        ) : (
+                            <Button onClick={() => updatePage("inc")}>
+                                Selanjutnya{" "}
+                                <FontAwesomeIcon icon={faArrowRight} />
+                            </Button>
+                        )}
                     </div>
                 </div>
             </main>

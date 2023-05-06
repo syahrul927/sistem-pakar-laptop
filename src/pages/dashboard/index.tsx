@@ -3,6 +3,10 @@ import Content from "~/components/Content";
 import Layout from "~/components/Layout";
 
 const Dashboard: NextPage = () => {
+    const callback = (str: string) => {
+        console.log(str)
+    }
+    callback("str")
     return (
         <>
             <Layout>
