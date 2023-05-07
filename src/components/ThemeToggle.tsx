@@ -13,7 +13,7 @@ export default function ThemeToggle() {
         ) {
             return localStorage.getItem("theme");
         }
-        return "light";
+        return "dark";
     });
     const toggleTheme = () => {
         const t = theme === "light" ? "dark" : "light";

@@ -1,9 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const ArticleThumbnail = () => {
+interface ArticleThumbnailProps {
+    slug: string;
+    title: string;
+    published: string;
+}
+const ArticleThumbnail: React.FC<ArticleThumbnailProps> = ({
+    title,
+    published,
+    slug,
+}) => {
     return (
-        <Link href={"/article/cara-buat-article"} className="cursor-pointer">
+        <Link href={`/article/${slug}`} className="cursor-pointer">
             <div className="overflow-hidden rounded-lg border border-zinc-300">
                 <Image
                     className="aspect-[1.5] "
@@ -14,8 +23,8 @@ const ArticleThumbnail = () => {
                 />
             </div>
             <div className="pl-1">
-                <p className="text-lg font-bold">Your Title Article</p>
-                <p className="text-sm">Sparepart</p>
+                <p className="truncate text-lg font-bold">{title}</p>
+                <p className="text-sm">{published}</p>
             </div>
         </Link>
     );

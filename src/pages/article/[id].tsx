@@ -1,14 +1,24 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import Navbar from "~/components/Navbar";
+import { api } from "~/utils/api";
 
-const markdown =
-    "# I am using __Markdown Previewer__. \n ====*====\n\nMade For FCC\n-----------\n \n### at [Codepen.io](https://codepen.io/soni7raj/full/ggmveM/)\n \nParagraphs are separated\nby a blank line.\n\nLeave 2 spaces at the end of a line to do a  \nline break\n\nText attributes *italic*, **bold**, \n`monospace`, ~~strikethrough~~ .\n\nUser Stories:\n\n  * I can type GitHub-flavored Markdown into a text area\n  * I can see a preview of the output of my markdown that is updated as I type\n  \n\n\n *[Rajkumar Soni](https://www.freecodecamp.com/soni7raj)*";
 const ArticlePage = () => {
     const router = useRouter();
+    const [title, setTitle] = useState<string>("Title Default");
+    const [date, setDate] = useState<string>("");
+    const [body, setBody] = useState<string>("Body Default");
     const { id } = router.query;
+    api.article.getById.useQuery(String(id) || null, {
+        onSuccess: (data) => {
+            setTitle(data?.title || "");
+            setBody(data?.body || "");
+            setDate(data?.date.toLocaleDateString() || "");
+        },
+    });
     return (
         <>
             <Head>
@@ -21,8 +31,8 @@ const ArticlePage = () => {
                     <Navbar />
                     <div className="w-full max-w-2xl">
                         <div className="my-10">
-                            <h1 className="text-2xl font-bold">{`Cara Memperbaiki Laptop yang lemot`}</h1>
-                            <p className="text-sm">Published: {`02/01/2023`}</p>
+                            <h1 className="text-2xl font-bold">{title}</h1>
+                            <p className="text-sm">Published: {date}</p>
                         </div>
                         <section className="relative mb-6 flex h-80 items-center justify-center">
                             <div className="absolute h-full w-full overflow-hidden">
@@ -38,8 +48,8 @@ const ArticlePage = () => {
                                 <div className="mb-5 font-mplus text-4xl font-medium"></div>
                             </div>
                         </section>
-                        <article className="prose prose-sm">
-                            <ReactMarkdown>{markdown}</ReactMarkdown>
+                        <article className="prose-md prose prose-blue  dark:prose-invert">
+                            <ReactMarkdown>{body}</ReactMarkdown>
                         </article>
                     </div>
                 </header>

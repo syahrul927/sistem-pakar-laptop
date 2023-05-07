@@ -47,7 +47,10 @@ const listMenu: SidebarProps[] = [
     },
     {
         title: "Logout",
-        href: () => void signOut(),
+        href: () =>
+            void signOut({
+                callbackUrl: "/",
+            }),
         icon: <FontAwesomeIcon icon={faSignOut} />,
     },
 ];

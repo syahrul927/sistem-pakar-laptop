@@ -78,6 +78,13 @@ Table HistoryDiagnosa {
   symptomId Int[] [not null]
 }
 
+Table Article {
+  id String [pk]
+  title String [not null]
+  body String [not null]
+  date DateTime [default: `now()`, not null]
+}
+
 Table DetailHistoryDiagnosa {
   id String [pk]
   historyId String [not null]

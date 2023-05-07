@@ -43,6 +43,12 @@ export type ISymptomViewTable = {
     weight: string;
     tools: ReactNode;
 };
+export type IArticleViewTable = {
+    no: number;
+    title: ReactNode;
+    date: string;
+    tools: ReactNode;
+};
 
 export type ISymptomSelect = {
     id: number;

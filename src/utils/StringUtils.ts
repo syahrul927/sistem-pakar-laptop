@@ -1,4 +1,4 @@
-export function makeid(length: number) {
+export const makeid = (length: number) => {
     let result = "";
     const characters =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -11,4 +11,11 @@ export function makeid(length: number) {
         counter += 1;
     }
     return result;
-}
+};
+export const slugGenerator = (str: string) => {
+    if (!str) return str;
+    return str
+        .toLowerCase()
+        .replace(/[^\w\s]/gi, "")
+        .replaceAll(" ", "-");
+};

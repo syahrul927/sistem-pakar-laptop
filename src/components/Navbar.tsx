@@ -64,7 +64,7 @@ const AuthShowcase: React.FC = () => {
     return status === "loading" ? (
         <div>Loading...</div>
     ) : sessionData ? (
-        <div className="dropdown dropdown-end">
+        <div className="dropdown-end dropdown">
             <div
                 tabIndex={0}
                 className="m-1 flex cursor-pointer flex-row items-center justify-center space-x-3  px-5"
@@ -86,7 +86,13 @@ const AuthShowcase: React.FC = () => {
                         <Link href={"/dashboard"}>Dashboard</Link>
                     </li>
                 )}
-                <li onClick={() => void signOut()}>
+                <li
+                    onClick={() =>
+                        void signOut({
+                            callbackUrl: "/",
+                        })
+                    }
+                >
                     <a>Sign out</a>
                 </li>
             </ul>

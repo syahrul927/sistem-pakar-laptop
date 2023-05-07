@@ -4,9 +4,9 @@ import Layout from "~/components/Layout";
 
 const Dashboard: NextPage = () => {
     const callback = (str: string) => {
-        console.log(str)
-    }
-    callback("str")
+        console.log(str);
+    };
+    callback("str");
     return (
         <>
             <Layout>
