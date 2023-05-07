@@ -5,7 +5,7 @@ import { slugGenerator } from "~/utils/StringUtils";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const articleRouter = createTRPCRouter({
-    getById: protectedProcedure
+    getById: publicProcedure
         .input(z.string().nullable())
         .query(async ({ ctx, input }) => {
             if (!input)

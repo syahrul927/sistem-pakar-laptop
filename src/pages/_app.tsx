@@ -12,6 +12,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     Component,
     pageProps: { session, ...pageProps },
 }) => {
+    // Ini Aplikasi Utama nya
     return (
         <SessionProvider session={session}>
             <NextNProgress color="#2563EB" />
