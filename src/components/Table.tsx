@@ -4,6 +4,7 @@ import { makeid } from "~/utils/StringUtils";
 export interface TableHeadProps<T extends { [S: string]: string | ReactNode }> {
     id: keyof T;
     title: string;
+    minSizeShow?: string;
 }
 
 export interface TableProps<T extends { [S: string]: string | ReactNode }> {
@@ -70,7 +71,11 @@ const Table = <T extends { [S: string]: string | ReactNode }>(
                                         return (
                                             <th
                                                 scope="col"
-                                                className="px-6 py-4"
+                                                className={`px-6 py-4 ${
+                                                    item.minSizeShow
+                                                        ? `hidden ${item.minSizeShow}:table-cell`
+                                                        : ""
+                                                }`}
                                                 key={item.id.toString()}
                                             >
                                                 {item.title}
@@ -97,7 +102,11 @@ const Table = <T extends { [S: string]: string | ReactNode }>(
                                                     item[col.id] || "[Empty]";
                                                 return (
                                                     <td
-                                                        className={`max-w-sm truncate whitespace-nowrap px-6 py-4 font-medium `}
+                                                        className={`max-w-[16rem] truncate whitespace-nowrap px-6 py-4 font-medium lg:max-w-sm  ${
+                                                            col.minSizeShow
+                                                                ? `hidden ${col.minSizeShow}:table-cell`
+                                                                : ""
+                                                        }`}
                                                         key={`col-${makeid(4)}`}
                                                     >
                                                         {value}

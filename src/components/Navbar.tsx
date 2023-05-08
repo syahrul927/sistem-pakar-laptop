@@ -6,8 +6,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const navigation = [
     { name: "Home", href: "/", current: false },
-    { name: "Article", href: "/article", current: false },
-    { name: "About", href: "/about", current: false },
+    // { name: "Article", href: "/article", current: false },
 ];
 const Navbar = () => {
     return (

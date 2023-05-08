@@ -1,10 +1,9 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Case } from "@prisma/client";
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { FormActionType } from "~/common/FormActionType";
 import Button from "~/components/Button";
 import Content from "~/components/Content";
 import Layout from "~/components/Layout";
@@ -96,7 +95,7 @@ const FormCasePage: NextPage = () => {
                 }
                 void router.push("/404");
             },
-            onError: (err) => {
+            onError: () => {
                 void router.push("/404");
             },
             enabled: false,
@@ -153,7 +152,7 @@ const FormCasePage: NextPage = () => {
 
     return (
         <Layout>
-            <Content title="Halaman Tambah Kasus" className="w-full">
+            <Content title="Halaman Edit Kasus" className="w-full">
                 <div className="my-10 flex w-full justify-center">
                     <div className="flex w-full max-w-md flex-col items-center justify-start space-y-4  ">
                         <TextArea

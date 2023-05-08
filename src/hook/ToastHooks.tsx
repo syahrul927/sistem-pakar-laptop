@@ -30,7 +30,7 @@ export function ToastProvider({ children }: Props) {
         if (toast.show) {
             setTimeout(() => setToast({ ...toast, show: false }), 5000);
         }
-    }, [toast.show]);
+    }, [toast, toast.show]);
     const { message, type, show } = toast;
     const renderToast = () => {
         return <Toast message={message} type={type} show={show} />;

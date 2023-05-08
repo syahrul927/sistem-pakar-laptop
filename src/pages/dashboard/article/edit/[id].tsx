@@ -1,4 +1,3 @@
-import { Symptom } from "@prisma/client";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -6,18 +5,17 @@ import Button from "~/components/Button";
 import Content from "~/components/Content";
 import Layout from "~/components/Layout";
 import Loading from "~/components/Loading";
-import TextArea from "~/components/TextArea";
+import TextCodeMirror from "~/components/TextCodeMirror";
 import TextInput from "~/components/TextInput";
 import { useToastContext } from "~/hook/ToastHooks";
 import { api } from "~/utils/api";
 
-const FormSymptomPage: NextPage = () => {
+const FormArticlePage: NextPage = () => {
     const router = useRouter();
     const { id } = router.query;
 
-    const [description, setDescription] = useState<string>("");
-    const [weight, setWeight] = useState<number>(0);
-    const [gejala, setGejala] = useState<Symptom>();
+    const [body, setBody] = useState<string>("");
+    const [title, setTitle] = useState<string>("");
 
     const [, setToast] = useToastContext();
 
@@ -28,42 +26,26 @@ const FormSymptomPage: NextPage = () => {
             type: "ERROR",
         });
     };
-    const saveSymptom = (description: string, weight: number) => {
-        if (!description || !weight) {
+    const saveArticle = (body: string, title: string) => {
+        if (!body || !title) {
             toastError();
             return;
         }
-        mutateSymptom({
-            id: gejala ? gejala.id : null,
-            weight: weight,
-            description: description,
+        mutateArticle({
+            id: null,
+            title: title,
+            body: body,
         });
     };
-    const { refetch: refetchGetSymptom, isLoading: isLoadingGetSymptom } =
-        api.symptom.getById.useQuery(Number(id || null), {
-            onSuccess: (data) => {
-                if (data) {
-                    setGejala(data);
-                    setDescription(data.description);
-                    setWeight(data.weight);
-                    return;
-                }
-                void router.back();
-            },
-            onError: (err) => {
-                void router.back();
-            },
-            enabled: false,
-        });
-    const { mutate: mutateSymptom, isLoading: isLoadingCreateSymptom } =
-        api.symptom.createOrUpdate.useMutation({
+    const { mutate: mutateArticle, isLoading: isLoadingCreateArticle } =
+        api.article.createOrUpdate.useMutation({
             onSuccess: () => {
                 setToast({
                     show: true,
-                    message: "Berhasil menambahkan data Gejala",
+                    message: "Berhasil menambahkan data Kasus",
                     type: "SUCCESS",
                 });
-                void router.push("/dashboard/symptom");
+                void router.push("/dashboard/article");
             },
             onError: (err) => {
                 const message = err.message;
@@ -74,37 +56,47 @@ const FormSymptomPage: NextPage = () => {
                 });
             },
         });
+    const { refetch } = api.article.getById.useQuery(String(id), {
+        onSuccess: (data) => {
+            if (!data) {
+                void router.back();
+                return;
+            }
+            setTitle(data.title);
+            setBody(data.body);
+        },
+        onError: () => {
+            void router.back();
+        },
+    });
     useEffect(() => {
-        void refetchGetSymptom();
-    }, [id, refetchGetSymptom]);
+        void refetch();
+    }, [id, refetch]);
+
     return (
         <Layout>
-            <Content title="Halaman Tambah Gejala" className="w-full">
+            <Content title="Halaman Tambah Artikel" className="w-full">
                 <div className="my-10 flex w-full justify-center">
-                    <div className="flex w-full max-w-md flex-col items-center justify-start space-y-4  ">
-                        <TextArea
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                    <div className="flex w-full max-w-2xl flex-col items-center justify-start space-y-4  ">
+                        <TextInput
+                            value={title}
+                            type="text"
+                            onChange={(e) => setTitle(e.target.value)}
+                            title="Judul Artikel"
+                            required
+                        />
+                        <TextCodeMirror
+                            value={body}
+                            onChange={(e) => setBody(e)}
                             title="Deskripsi"
                             required
                         />
-                        <TextInput
-                            value={weight.toString()}
-                            type="number"
-                            onChange={(e) =>
-                                setWeight(parseFloat(e.target.value))
-                            }
-                            title="Bobot"
-                            required
-                        />
-                        {isLoadingCreateSymptom ? (
+                        {isLoadingCreateArticle ? (
                             <Loading />
                         ) : (
                             <div className="flex w-full justify-end">
                                 <Button
-                                    onClick={() =>
-                                        saveSymptom(description, weight)
-                                    }
+                                    onClick={() => saveArticle(body, title)}
                                 >
                                     Save
                                 </Button>
@@ -116,4 +108,4 @@ const FormSymptomPage: NextPage = () => {
         </Layout>
     );
 };
-export default FormSymptomPage;
+export default FormArticlePage;

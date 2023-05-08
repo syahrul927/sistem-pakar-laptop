@@ -38,10 +38,12 @@ const CasePage: NextPage = () => {
             {
                 id: "solution",
                 title: "Solution",
+                minSizeShow: "xl",
             },
             {
                 id: "tools",
                 title: "Tools",
+                minSizeShow: "lg",
             },
         ],
     });
@@ -135,7 +137,7 @@ const CasePage: NextPage = () => {
     return (
         <Layout>
             <div className="flex h-screen w-full flex-col items-center space-y-2 ">
-                <Content title="Kasus Page" className="w-full">
+                <Content title="Halaman Kasus" className="w-full">
                     <div className="flex justify-end">
                         <Link href={"/dashboard/case/add"}>
                             <Button>

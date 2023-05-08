@@ -14,7 +14,7 @@ export interface TextCodeMirrorProps {
 const TextCodeMirror: React.FC<TextCodeMirrorProps> = (props) => {
     const { className, title, errorMessage, required, onChange, value } = props;
 
-    const [theme, setTheme] = useState(() => {
+    const [theme] = useState(() => {
         if (
             typeof localStorage !== "undefined" &&
             localStorage.getItem("theme")

@@ -39,8 +39,9 @@ const FormSymptomPage: NextPage = () => {
             description: description,
         });
     };
-    const { refetch: refetchGetSymptom, isLoading: isLoadingGetSymptom } =
-        api.symptom.getById.useQuery(Number(id || null), {
+    const { refetch: refetchGetSymptom } = api.symptom.getById.useQuery(
+        Number(id || null),
+        {
             onSuccess: (data) => {
                 if (data) {
                     setGejala(data);
@@ -50,11 +51,12 @@ const FormSymptomPage: NextPage = () => {
                 }
                 void router.back();
             },
-            onError: (err) => {
+            onError: () => {
                 void router.back();
             },
             enabled: false,
-        });
+        }
+    );
     const { mutate: mutateSymptom, isLoading: isLoadingCreateSymptom } =
         api.symptom.createOrUpdate.useMutation({
             onSuccess: () => {
@@ -79,7 +81,7 @@ const FormSymptomPage: NextPage = () => {
     }, [id, refetchGetSymptom]);
     return (
         <Layout>
-            <Content title="Halaman Tambah Gejala" className="w-full">
+            <Content title="Halaman Edit Gejala" className="w-full">
                 <div className="my-10 flex w-full justify-center">
                     <div className="flex w-full max-w-md flex-col items-center justify-start space-y-4  ">
                         <TextArea

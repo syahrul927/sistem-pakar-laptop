@@ -6,6 +6,7 @@ import { caseRouter } from "./routers/case";
 import { diagnoseRouter } from "./routers/diagnose";
 import { historyDiagnoseRouter } from "./routers/historyDiagnose";
 import { articleRouter } from "./routers/article";
+import { summaryRouter } from "./routers/summary";
 
 /**
  * This is the primary router for your server.
@@ -19,7 +20,8 @@ export const appRouter = createTRPCRouter({
     case: caseRouter,
     diagnose: diagnoseRouter,
     historyDiagnose: historyDiagnoseRouter,
-    article: articleRouter
+    article: articleRouter,
+    summary: summaryRouter,
 });
 
 // export type definition of API

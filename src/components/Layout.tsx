@@ -12,7 +12,7 @@ const Layout: React.FC<React.ComponentPropsWithoutRef<"div">> = (props) => {
             <div className="break-word overflow-hidden bg-zinc-100 transition-colors duration-500 dark:border-zinc-900 dark:bg-zinc-700">
                 <div className="flex flex-row overflow-hidden">
                     <Sidebar />
-                    <div className="mb-5 flex h-screen w-full flex-1 flex-col items-center space-y-3 overflow-hidden px-3 py-5 ">
+                    <div className="mt-5 flex h-screen w-full flex-1 flex-col items-center overflow-y-auto px-3 py-5 lg:mt-0 ">
                         {props.children}
                     </div>
                 </div>

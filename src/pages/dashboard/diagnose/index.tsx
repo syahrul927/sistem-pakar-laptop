@@ -16,6 +16,7 @@ const HistoryDiagnosePage: NextPage = () => {
             {
                 id: "id",
                 title: "ID",
+                minSizeShow: "xl",
             },
             {
                 id: "email",
@@ -24,39 +25,39 @@ const HistoryDiagnosePage: NextPage = () => {
             {
                 id: "name",
                 title: "Nama",
+                minSizeShow: "lg",
             },
             {
                 id: "date",
                 title: "Tanggal",
+                minSizeShow: "md",
             },
             {
                 id: "tools",
                 title: "Tools",
+                minSizeShow: "md",
             },
         ],
     });
-    const { refetch, isLoading } = api.historyDiagnose.getAll.useQuery(
-        undefined,
-        {
-            onSuccess: (data) => {
-                const array: IHistoryViewTable[] = data.map((item) => ({
-                    id: item.id,
-                    date: item.date.toLocaleString(),
-                    name: item.user?.name ?? "Public User",
-                    email: item.user?.email ?? "Public User",
-                    tools: (
-                        <Link
-                            target={"_blank"}
-                            href={`/diagnosa/result/${item.id}`}
-                        >
-                            <Button>Detail</Button>
-                        </Link>
-                    ),
-                }));
-                setDataTable({ ...dataTable, data: array });
-            },
-        }
-    );
+    const { isLoading } = api.historyDiagnose.getAll.useQuery(undefined, {
+        onSuccess: (data) => {
+            const array: IHistoryViewTable[] = data.map((item) => ({
+                id: item.id,
+                date: item.date.toLocaleString(),
+                name: item.user?.name ?? "Public User",
+                email: item.user?.email ?? "Public User",
+                tools: (
+                    <Link
+                        target={"_blank"}
+                        href={`/diagnosa/result/${item.id}`}
+                    >
+                        <Button>Detail</Button>
+                    </Link>
+                ),
+            }));
+            setDataTable({ ...dataTable, data: array });
+        },
+    });
     return (
         <Layout>
             <div className="flex h-screen w-full items-start justify-center">

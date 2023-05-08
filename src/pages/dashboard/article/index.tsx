@@ -34,10 +34,12 @@ const ArticleDashboardPage: NextPage = () => {
             {
                 id: "date",
                 title: "Tanggal dibuat",
+                minSizeShow: "xl",
             },
             {
                 id: "tools",
                 title: "Tools",
+                minSizeShow: "lg",
             },
         ],
     });
@@ -98,7 +100,7 @@ const ArticleDashboardPage: NextPage = () => {
     return (
         <Layout>
             <div className="flex h-screen w-full flex-col items-center space-y-2 ">
-                <Content title="Artikel Page" className="w-full">
+                <Content title="Halaman Artikel" className="w-full">
                     <div className="flex justify-end">
                         <Link href={"/dashboard/article/add"}>
                             <Button>

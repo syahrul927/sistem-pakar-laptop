@@ -1,6 +1,5 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import Button from "~/components/Button";
 

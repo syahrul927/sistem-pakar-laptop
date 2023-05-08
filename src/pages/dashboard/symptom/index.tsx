@@ -4,13 +4,12 @@ import { Symptom } from "@prisma/client";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "~/components/Button";
 import Content from "~/components/Content";
 import Layout from "~/components/Layout";
 import Loading from "~/components/Loading";
 import Modal from "~/components/Modal";
-import SlidePanel from "~/components/SlidePanel";
 import Table, { TableProps } from "~/components/Table";
 import { useToastContext } from "~/hook/ToastHooks";
 import { ISymptomViewTable } from "~/type";
@@ -35,10 +34,12 @@ const SymptomPage: NextPage = () => {
             {
                 id: "weight",
                 title: "Bobot",
+                minSizeShow: "lg",
             },
             {
                 id: "tools",
                 title: "Tools",
+                minSizeShow: "md",
             },
         ],
     });
@@ -91,7 +92,7 @@ const SymptomPage: NextPage = () => {
     return (
         <Layout>
             <div className="flex h-screen w-full flex-col items-center space-y-2 ">
-                <Content title="Gejala Page" className="w-full">
+                <Content title="Halaman Gejala" className="w-full">
                     <div className="flex justify-end">
                         <Link href={"/dashboard/symptom/add"}>
                             <Button>

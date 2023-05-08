@@ -22,10 +22,12 @@ const UserPage: NextPage = () => {
             {
                 id: "id",
                 title: "ID",
+                minSizeShow: "xl",
             },
             {
                 id: "nama",
                 title: "Nama",
+                minSizeShow: "md",
             },
             {
                 id: "email",
@@ -34,6 +36,7 @@ const UserPage: NextPage = () => {
             {
                 id: "type",
                 title: "Tipe User",
+                minSizeShow: "lg",
             },
         ],
     });
@@ -57,7 +60,7 @@ const UserPage: NextPage = () => {
     return (
         <Layout>
             <div className="flex h-screen w-full items-start justify-center">
-                <Content title="User Page" className="min-w-full">
+                <Content title="Halaman User" className="min-w-full">
                     <div className="flex justify-end">
                         <Link href={"/dashboard/user/add"}>
                             <Button>

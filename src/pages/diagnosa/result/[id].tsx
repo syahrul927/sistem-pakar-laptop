@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "~/components/Button";
 import Content from "~/components/Content";
 import Table, { TableProps } from "~/components/Table";
@@ -14,7 +14,7 @@ interface MatchBar {
     point: number;
 }
 type DetailDiagnose = RouterOutputs["diagnose"]["getDiagnose"]["case"];
-const ResultPage: React.FC<{ results: MatchBar[] }> = ({ results }) => {
+const ResultPage: React.FC<{ results: MatchBar[] }> = () => {
     const router = useRouter();
     const { id } = router.query;
     const [detail, setDetail] = useState<DetailDiagnose>();

@@ -58,9 +58,9 @@ const FormArticlePage: NextPage = () => {
 
     return (
         <Layout>
-            <Content title="Halaman Tambah Gejala" className="w-full">
+            <Content title="Halaman Tambah Artikel" className="w-full">
                 <div className="my-10 flex w-full justify-center">
-                    <div className="flex w-full max-w-md flex-col items-center justify-start space-y-4  ">
+                    <div className="flex w-full max-w-2xl flex-col items-center justify-start space-y-4  ">
                         <TextInput
                             value={title}
                             type="text"
