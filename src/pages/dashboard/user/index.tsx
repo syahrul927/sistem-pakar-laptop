@@ -22,12 +22,12 @@ const UserPage: NextPage = () => {
             {
                 id: "id",
                 title: "ID",
-                minSizeShow: "xl",
+                minSizeShow: "xl:table-cell",
             },
             {
                 id: "nama",
                 title: "Nama",
-                minSizeShow: "md",
+                minSizeShow: "md:table-cell",
             },
             {
                 id: "email",
@@ -36,7 +36,7 @@ const UserPage: NextPage = () => {
             {
                 id: "type",
                 title: "Tipe User",
-                minSizeShow: "lg",
+                minSizeShow: "lg:table-cell",
             },
         ],
     });

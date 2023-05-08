@@ -38,12 +38,12 @@ const CasePage: NextPage = () => {
             {
                 id: "solution",
                 title: "Solution",
-                minSizeShow: "xl",
+                minSizeShow: "lg:table-cell",
             },
             {
                 id: "tools",
                 title: "Tools",
-                minSizeShow: "lg",
+                minSizeShow: "md:table-cell",
             },
         ],
     });

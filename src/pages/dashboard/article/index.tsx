@@ -34,12 +34,12 @@ const ArticleDashboardPage: NextPage = () => {
             {
                 id: "date",
                 title: "Tanggal dibuat",
-                minSizeShow: "xl",
+                minSizeShow: "lg:table-cell",
             },
             {
                 id: "tools",
                 title: "Tools",
-                minSizeShow: "lg",
+                minSizeShow: "md:table-cell",
             },
         ],
     });

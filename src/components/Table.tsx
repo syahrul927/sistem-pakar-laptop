@@ -73,7 +73,7 @@ const Table = <T extends { [S: string]: string | ReactNode }>(
                                                 scope="col"
                                                 className={`px-6 py-4 ${
                                                     item.minSizeShow
-                                                        ? `hidden ${item.minSizeShow}:table-cell`
+                                                        ? `hidden ${item.minSizeShow}`
                                                         : ""
                                                 }`}
                                                 key={item.id.toString()}
@@ -85,37 +85,50 @@ const Table = <T extends { [S: string]: string | ReactNode }>(
                                 </tr>
                             </thead>
                             <tbody>
-                                {list.map((item, idx) => {
-                                    let className = "";
-                                    if (typeof item.className === "string") {
-                                        className = item.className;
-                                    }
-                                    return (
-                                        <tr
-                                            className={`border-b dark:border-neutral-500 ${className}`}
-                                            key={idx}
-                                        >
-                                            {props.column.map((col) => {
-                                                if (col.id === "className")
-                                                    return;
-                                                const value =
-                                                    item[col.id] || "[Empty]";
-                                                return (
-                                                    <td
-                                                        className={`max-w-[16rem] truncate whitespace-nowrap px-6 py-4 font-medium lg:max-w-sm  ${
-                                                            col.minSizeShow
-                                                                ? `hidden ${col.minSizeShow}:table-cell`
-                                                                : ""
-                                                        }`}
-                                                        key={`col-${makeid(4)}`}
-                                                    >
-                                                        {value}
-                                                    </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    );
-                                })}
+                                {list.length ? (
+                                    list.map((item, idx) => {
+                                        let className = "";
+                                        if (
+                                            typeof item.className === "string"
+                                        ) {
+                                            className = item.className;
+                                        }
+                                        return (
+                                            <tr
+                                                className={`border-b dark:border-neutral-500 ${className}`}
+                                                key={idx}
+                                            >
+                                                {props.column.map((col) => {
+                                                    if (col.id === "className")
+                                                        return;
+                                                    const value =
+                                                        item[col.id] ||
+                                                        "[Empty]";
+                                                    return (
+                                                        <td
+                                                            className={`max-w-[16rem] truncate whitespace-nowrap px-6 py-4 font-medium lg:max-w-sm  ${
+                                                                col.minSizeShow
+                                                                    ? `hidden ${col.minSizeShow}`
+                                                                    : ""
+                                                            }`}
+                                                            key={`col-${makeid(
+                                                                4
+                                                            )}`}
+                                                        >
+                                                            {value}
+                                                        </td>
+                                                    );
+                                                })}
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td colSpan={props.column.length}>
+                                            Tidak Ada Data
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>

@@ -34,12 +34,12 @@ const SymptomPage: NextPage = () => {
             {
                 id: "weight",
                 title: "Bobot",
-                minSizeShow: "lg",
+                minSizeShow: "lg:table-cell",
             },
             {
                 id: "tools",
                 title: "Tools",
-                minSizeShow: "md",
+                minSizeShow: "md:table-cell",
             },
         ],
     });

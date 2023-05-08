@@ -16,7 +16,7 @@ const HistoryDiagnosePage: NextPage = () => {
             {
                 id: "id",
                 title: "ID",
-                minSizeShow: "xl",
+                minSizeShow: "xl:table-cell",
             },
             {
                 id: "email",
@@ -25,17 +25,17 @@ const HistoryDiagnosePage: NextPage = () => {
             {
                 id: "name",
                 title: "Nama",
-                minSizeShow: "lg",
+                minSizeShow: "lg:table-cell",
             },
             {
                 id: "date",
                 title: "Tanggal",
-                minSizeShow: "md",
+                minSizeShow: "md:table-cell",
             },
             {
                 id: "tools",
                 title: "Tools",
-                minSizeShow: "md",
+                minSizeShow: "md:table-cell",
             },
         ],
     });
