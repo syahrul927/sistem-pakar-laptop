@@ -8,6 +8,7 @@ import {
     faKey,
     faSignOut,
     faUser,
+    faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { signOut, useSession } from "next-auth/react";
 
@@ -70,16 +71,15 @@ const Sidebar = () => {
     const { data: sessionData } = useSession();
     const [show, setShow] = useState(false);
     return (
-        <div className={`drawer max-w-fit bg-white dark:bg-zinc-800 `}>
+        <div className={`drawer mb-5 max-w-fit bg-white dark:bg-zinc-800`}>
             <div className="drawer-mobile drawer">
                 <div
-                    className="absolute left-1 top-1 z-50 rounded-sm bg-zinc-300 px-2 py-1 dark:bg-zinc-800"
+                    className="absolute left-0 top-0 z-50 w-full rounded-sm bg-zinc-300 p-2 dark:bg-zinc-800 lg:hidden"
                     onClick={() => {
                         setShow(!show);
-                        console.log("change show", show);
                     }}
                 >
-                    <FontAwesomeIcon icon={faBars} />
+                    <FontAwesomeIcon icon={show ? faX : faBars} />
                 </div>
                 <div
                     className={`drawer-side bg-white transition-all duration-300 dark:bg-zinc-800 ${
@@ -100,7 +100,7 @@ const Sidebar = () => {
                             <ThemeToggle />
                         </div>
                     </div>
-                    <ul className="menu w-64 p-4 text-base-content">
+                    <ul className="menu w-[80%] p-4 text-base-content lg:w-64">
                         {listMenu.map((item, idx) => (
                             <li key={`key-${idx}`}>
                                 <Link
