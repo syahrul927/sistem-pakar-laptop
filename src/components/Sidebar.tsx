@@ -74,7 +74,7 @@ const Sidebar = () => {
         <div className={`drawer mb-5 max-w-fit bg-white dark:bg-zinc-800`}>
             <div className="drawer-mobile drawer">
                 <div
-                    className="absolute left-0 top-0 z-50 w-full rounded-sm bg-zinc-300 p-2 dark:bg-zinc-800 lg:hidden"
+                    className="absolute left-0 top-0 z-50 w-full rounded-sm bg-white p-2 dark:bg-zinc-800 lg:hidden"
                     onClick={() => {
                         setShow(!show);
                     }}
