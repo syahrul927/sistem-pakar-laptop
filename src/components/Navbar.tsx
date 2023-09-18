@@ -11,7 +11,7 @@ const navigation = [
 const Navbar = () => {
     return (
         <>
-            <div className="dropdown md:hidden">
+            <div className="dropdown flex justify-between md:hidden">
                 <label tabIndex={0} className="btn-ghost btn md:hidden">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -38,6 +38,7 @@ const Navbar = () => {
                         </li>
                     ))}
                 </ul>
+                <AuthShowcase />
             </div>
             <div className="navbar hidden bg-white dark:bg-zinc-800 md:flex">
                 <div className="flex-1">
@@ -63,7 +64,7 @@ const AuthShowcase: React.FC = () => {
     return status === "loading" ? (
         <div>Loading...</div>
     ) : sessionData ? (
-        <div className="dropdown-end dropdown">
+        <div className="dropdown dropdown-end">
             <div
                 tabIndex={0}
                 className="m-1 flex cursor-pointer flex-row items-center justify-center space-x-3  px-5"

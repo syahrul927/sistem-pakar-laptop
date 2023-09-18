@@ -44,7 +44,10 @@ export const diagnoseRouter = createTRPCRouter({
     diagnose: publicProcedure
         .input(z.object({ symptoms: z.array(z.number()) }))
         .mutation(async ({ ctx, input }) => {
-            const newCase = input.symptoms; // new Case
+            // gejala yang dipilih
+            const newCase = input.symptoms;
+
+            // mendapatkan kasus yang pernah terjadi di database
             const allCase = await ctx.prisma.case.findMany({
                 include: {
                     CaseSymptom: {
@@ -53,8 +56,11 @@ export const diagnoseRouter = createTRPCRouter({
                         },
                     },
                 },
-            }); // old Case
+            });
+
             const similiarity: Similarity[] = [];
+
+            // mencari dan menghitung persentase similiarity berdasarkan kasus yang ada dengan gejala yang dipilih
             allCase.forEach((item) => {
                 let temp = 0;
                 newCase.forEach((i) => {
@@ -71,7 +77,8 @@ export const diagnoseRouter = createTRPCRouter({
             });
 
             const user = ctx.session?.user;
-            console.log("user: ", user);
+
+            // Menyimpan ke dalam history hasil diagnosa
             const history = await ctx.prisma.historyDiagnosa.create({
                 data: {
                     symptomId: [...newCase],
